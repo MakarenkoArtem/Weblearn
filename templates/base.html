@@ -1,74 +1,33 @@
-{% extends "template.html" %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Weblearn</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-primary">
+    <h4><font color="white">Weblearn</font></h4>
+    {% block dropdown %}
+    {% endblock %}
+</nav>
+<br>
 {% block content %}
-<div class="container">
-    <h3 align="center"><font color="blue">Здесь распологаются уроки с заданиями к ним</font></h3></div>
-    <br><br>
-    <table class="table.table-borderless" border-spacing="50px" align="center">
-        <tr>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-        </tr>
-        <tr>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-        </tr>
-    </table>
-</div>
 {% endblock %}
+</body>
+</html>

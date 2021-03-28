@@ -1,19 +1,28 @@
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, request
 from data import db_session
 from forms.user import RegisterForm
+from forms.lesson import LessonForm
 from data.users import User
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
-@app.route('/')
 @app.route('/weblearn')
 def index():
-    return render_template("base.html")
+    return render_template("weblearn.html")
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    form = LessonForm()
+    print(form)
+    if form.validate_on_submit():
+        form.image.data.save("1.png")
+        return redirect('/weblearn')
+    return render_template('add.html', form=form)
+
+@app.route('/', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -29,8 +38,8 @@ def reqister():
         user = User(
             nickname=form.nickname.data,
             email=form.email.data,
-            about=form.about.data
-        )
+            city_from=form.city_from.data,
+            about=form.about.data)
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
