@@ -2,93 +2,48 @@
 
 {% block dropdown %}
 <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-            <img src="/static/img/porsche_1600x1200.jpg" align="right" width="60" height="60"
-                 alt="Винни-Пух" class="round">
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right">
-            <li class="dropdown-header">Настройка пользователя</li>
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li class="divider"></li>
-            <li class="dropdown-header">Уроки</li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-    </div>
+    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        <img src="/static/img/porsche_1600x1200.jpg" align="right" width="60" height="60"
+             alt="Винни-Пух" class="round">
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
+        <li class="dropdown-header">Настройка пользователя</li>
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header">Уроки</li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+    </ul>
+</div>
 {% endblock %}
 {% block content %}
 <div class="container">
-    <h3 align="center"><font color="blue">Здесь распологаются уроки с заданиями к ним</font></h3></div>
-    <br><br>
-    <table class="table.table-borderless" border-spacing="50px" align="center">
-        <tr>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-        </tr>
-        <tr>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-            <td><div class="card" style="width: 18rem;">
-                <img src="/static/img/porsche_1600x1200.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make
-                        up the
-                        bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div></td>
-        </tr>
-    </table>
+    <h3 align="center"><font color="blue">Здесь распологаются уроки с заданиями к ним</font></h3>
 </div>
-<a href="/add" style="bottom: 10px; right: 20px; position: fixed;">
+<br><br>
+<table class="table.table-borderless" border-spacing="50px" align="center">
+    {% for lesson in lessons %}
+        {% if loop.index % 3 == 1 %}
+            <tr>
+        {% endif %}
+        <td>
+            <div class="card" style="width: 18rem;">
+                <img src="/static/img/top_images/{{ id }}_{{ loop.index }}.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">{{ lesson.text }}</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </td>
+        {% if loop.index % 3 == 0 or loop.index == 9 %}
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+</div>
+<a href="/add/{{ id }}" style="bottom: 10px; right: 20px; position: fixed;">
     <img src="/static/img/icons8-libre-office-writer.svg">
 </a>
 {% endblock %}

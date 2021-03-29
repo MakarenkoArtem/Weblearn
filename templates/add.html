@@ -19,35 +19,47 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-<form action="" method="post" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.title.label }}<br>
-        {{ form.title(class="form-control") }}<br>
-        {% for error in form.title.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.title.label }}<br>
+            {{ form.title(class="form-control") }}<br>
+            {% for error in form.title.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.text.label }}<br>
-        {{ form.text(class="form-control") }}<br>
-        {% for error in form.text.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
+        </p>
+        <p>
+            {{ form.top_image.label }}<br>
+            {{ form.top_image(class="form-control-file") }}<br>
+            {% for error in form.top_image.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.image.label }}<br>
-        {{ form.image(class="form-control-file") }}<br>
-        {% for error in form.image.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
+        </p>
+        <p>
+            {{ form.text.label }}<br>
+            {{ form.text(class="form-control") }}<br>
+            {% for error in form.text.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
         {% endfor %}
-    </p>
-    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-</form></div>
+        </p>
+        <p>
+            {{ form.images.label }}<br>
+            {{ form.images(class="form-control-file") }}<br>
+            {% for error in form.images.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+        {% endfor %}
+        </p>
+        <a href="/weblearn/{{ id }}" style="float: left;" class="btn btn-danger">Назад
+        </a>
+        <p align="right">{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    </form>
+</div>
 {% endblock %}

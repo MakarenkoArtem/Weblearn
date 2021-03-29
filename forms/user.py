@@ -11,4 +11,10 @@ class RegisterForm(FlaskForm):
     nickname = StringField('Имя пользователя', validators=[DataRequired()])
     city_from = StringField('Город', default="")
     about = TextAreaField("Немного о себе")
+    submit = SubmitField('Зарегистрироваться')
+
+
+class EntryForm(FlaskForm):
+    nickname = StringField('Имя пользователя', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
     submit = SubmitField('Войти')

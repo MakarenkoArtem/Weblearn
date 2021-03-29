@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, TextAreaField, SubmitField
+from wtforms import MultipleFileField, StringField, TextAreaField, SubmitField
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired
@@ -7,7 +7,10 @@ from wtforms.validators import DataRequired
 
 class LessonForm(FlaskForm):
     title = StringField('Название урока', validators=[DataRequired()])
-    text = TextAreaField("Текст урока", validators=[DataRequired()])
-    image = FileField('Картинка',
+    top_image = FileField('Главная картинка',
                        validators=[FileRequired(), FileAllowed(['jpg', 'png', "bmp"], 'Images only!')])
+    text = TextAreaField("Текст урока", validators=[DataRequired()])
+    images = MultipleFileField('Картинки',
+                       validators=[FileAllowed(['jpg', 'png', "bmp"], 'Images only!')])
     submit = SubmitField('Сохранить')
+#multiple
