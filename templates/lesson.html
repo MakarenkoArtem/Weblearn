@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+
+{% block dropdown %}
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        <img src="/static/img/porsche_1600x1200.jpg" align="right" width="60" height="60"
+             alt="Винни-Пух" class="round">
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
+        <li class="dropdown-header">Настройка пользователя</li>
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header">Уроки</li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+    </ul>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container" style="float: left; margin: 0em 0em 0em 2.4%; width: 71%;">
+    <h1 align="center"><font color="blue">{{ lesson.title }}</font></h1>
+    <br>
+    <p align="center"><img
+            src="/static/img/top_images/{{ id }}_{{ lesson.id }}.png" width="50%" height="50%"
+            align="top" alt="..."></p><br>
+    <h3>{{ lesson.text }}</font></h3>
+    <a href="/weblearn/{{ id }}" style="float: left;" class="btn btn-danger">Назад</a>
+</div>
+<div class="container" style="padding: 5px; float: right; width: 25%;">
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    {% for img in images %}<!-- margin: 0em 0em 0em 0em - Отступ сверху, справа, снизу и слева -->
+    <p align="right" style="right: 1.6%; top: 1.6%; margin: 0em 3% 0em 0em"><img
+            src="/static/img/all_images/{{ img }}" width="100%" height="100%"
+            align="top" alt="..."></p>
+    <br>
+    {% endfor %}
+</div>
+{% endblock %}

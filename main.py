@@ -5,8 +5,9 @@ from forms.user import RegisterForm, EntryForm
 from forms.lesson import LessonForm
 from data.users import User
 from data.lessons import Lesson
-from os import listdir
+from os import listdir, remove, rmdir, mkdir
 from PIL import Image
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'my_secret_key'
 
@@ -15,14 +16,22 @@ app.config['SECRET_KEY'] = 'my_secret_key'
 def weblearn(id):
     db_sess = db_session.create_session()
     lessons = db_sess.query(Lesson).all()[:9]
-    print(lessons)
+    texts = []
     k = 1
     for i in lessons:
         image = open(f'static/img/top_images/{id}_{k}.png', 'wb')
         image.write(i.top_image)
+        texts.append(i.text.split("\r")[0][:21] + "...")
         k += 1
-    return render_template("weblearn.html", id=id, lessons=lessons)
+    return render_template("weblearn.html", id=id, lessons=lessons, texts=texts)
 
+@app.route('/lesson/<int:lesson>/<int:id>')
+def lesson(lesson, id):
+    db_sess = db_session.create_session()
+    lesson = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
+    open(f'static/img/top_images/{lesson.author_id}_{lesson.id}.png', 'wb').write(lesson.top_image)
+    images = lesson.images.split(", ")
+    return render_template("lesson.html", id=id, lesson=lesson, images=images)
 
 @app.route('/')
 def choice():
@@ -63,9 +72,6 @@ def add(id):
             img.append(str(f'{id}_{k}.jpg'))
             k += 1
         form.top_image.data.save('static/img/test.png')
-        im = Image.open("static/img/test.png")
-        im = im.resize((300, 300))
-        im.save('static/img/test.png')
         im = open("static/img/test.png", 'rb')
         lesson = Lesson(
             author_id=id,
@@ -73,6 +79,7 @@ def add(id):
             top_image=im.read(),
             text=form.text.data,
             images=", ".join(img))
+        remove("static/img/test.png")
         db_sess = db_session.create_session()
         db_sess.add(lesson)
         db_sess.commit()
@@ -107,18 +114,11 @@ def register():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route("/order", methods=['GET', 'POST'])
-def view_order():
-    order_id = 5
-    return redirect(url_for('.view_ready_order', order_id=order_id))
-
-
-@app.route("/ready/<int:order_id>", methods=['GET', 'POST'])
-def view_ready_order(order_id):
-    print(order_id)
-    return render_template('weblearn.html', title=u'Заказ оформлен', order_id=order_id)
-
-
 if __name__ == '__main__':
+    try:
+        mkdir("static/img/top_images")
+    except FileExistsError:
+        pass
     db_session.global_init("db/base_date.db")
     app.run(port=8080, host='127.0.0.1', debug=True)
+    rmdir("static/img/top_images")
