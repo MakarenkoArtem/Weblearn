@@ -1,6 +1,8 @@
 flask
-flask-wtf
+flask_restful
+flask_login
 forms
 sqlalchemy
+sqlalchemy_serializer
 wtforms
 requests
