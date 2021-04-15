@@ -5,7 +5,7 @@ from forms.user import RegisterForm, EntryForm
 from forms.lesson import LessonForm
 from data.users import User
 from data.lessons import Lesson
-from os import listdir, remove, rmdir, mkdir
+from os import listdir, remove, rmdir, mkdir, environ
 
 
 app = Flask(__name__)
@@ -125,5 +125,9 @@ if __name__ == '__main__':
     except FileExistsError:
         pass
     db_session.global_init("db/base_date.db")
-    app.run(port=8080, host='127.0.0.1', debug=True)
+    if 'HEROKU' in environ:
+        port = int(environ.get("PORT", 5000))
+        app.run(host='0.0.0.0', port=port)
+    else:
+        app.run(port=8080, host='127.0.0.1', debug=True)
     rmdir("static/img/top_images")
