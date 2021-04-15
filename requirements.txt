@@ -1,5 +1,4 @@
 flask
-forms
 sqlalchemy
 sqlalchemy_serializer
 wtforms
