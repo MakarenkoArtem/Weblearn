@@ -6,7 +6,7 @@ from forms.lesson import LessonForm
 from data.users import User
 from data.lessons import Lesson
 from os import listdir, remove, rmdir, mkdir
-from PIL import Image
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'my_secret_key'
