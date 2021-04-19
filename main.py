@@ -60,6 +60,10 @@ def weblearn(page=1):
             pages.add(i)
     pages = list(pages)
     pages.sort()
+    if pages[0] + 1 not in pages and len(pages) > 1:
+        pages.insert(1, "...")
+    if pages[-1] - 1 not in pages and len(pages) > 1:
+        pages.insert(-2, "...")
     print(pages)
     return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts, pages=pages)
 
@@ -102,6 +106,9 @@ def entry():
     return render_template('entry.html', form=form)
 
 
+@app.route('/add_test', methods=['GET', 'POST'])
+def add_test():
+    return "Здесь будет создание теста"
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     try:
@@ -125,8 +132,10 @@ def add():
         for i in form.images.data:
             image = i.read()
             im = db_sess.query(Image).filter(Image.image == image).all()
+            print(im)
             if len(im):
-                img.append(im.id)
+                print(im[0])
+                img.append(im[0].id)
             else:
                 imag = Image(image=image)
                 db_sess.add(imag)
@@ -140,7 +149,10 @@ def add():
             images=",".join([str(i) for i in img]))
         db_sess.add(lesson)
         db_sess.commit()
-        return redirect(url_for('.weblearn', id=id))
+        if form.test.data:
+            return redirect('/add_test')
+        else:
+            return redirect('/weblearn')
     return render_template('add.html', form=form, id=id)
 
 

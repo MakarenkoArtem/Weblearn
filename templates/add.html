@@ -57,6 +57,14 @@
             {{ error }}
         {% endfor %}
         </p>
+        <p>
+            {{ form.test.label }}
+            {{ form.test(class="form") }}
+            {% for error in form.test.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        {% endfor %}
+        </p>
         <a href="/weblearn/{{ id }}" style="float: left;" class="btn btn-danger">Назад
         </a>
         <p align="right">{{ form.submit(type="submit", class="btn btn-primary") }}</p>

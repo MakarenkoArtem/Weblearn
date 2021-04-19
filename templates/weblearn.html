@@ -32,7 +32,7 @@
             <tr>
         {% endif %}
         <td>
-            <div class="card" style="width: 50%;">
+            <div class="card" style="width: 280px; position: relative;">
                 <img src="/static/img/top_images/{{ img[loop.index-1] }}" class="card-img-top" height="280px" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ lesson.title }}</h5>
@@ -46,15 +46,15 @@
         {% endif %}
     {% endfor %}
 </table>
-<div align="bottom">
+</div>
+<div align="center" style="bottom: 12.4%; position: relative;">
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
       {% for page in pages %}
-            <li class="page-item"><a class="page-link" href="weblearn/page={{ page }}">{{ page }}</a></li>
+            <li class="page-item"><a class="page-link" {% if page == "..." %} aria-disabled="true" {% else %} href="/weblearn/page={{ page }}" {% endif %}>{{ page }}</a></li>
       {% endfor %}
   </ul>
 </nav></div>
-</div>
 <a href="/add" style="bottom: 2.4%; right: 1.6%; position: fixed;">
     <img src="/static/img/icons8-libre-office-writer.svg">
 </a>
