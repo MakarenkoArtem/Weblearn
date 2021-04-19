@@ -109,6 +109,9 @@ def entry():
 @app.route('/add_test', methods=['GET', 'POST'])
 def add_test():
     return "Здесь будет создание теста"
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    return "Здесь будет сам тест"
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     try:
