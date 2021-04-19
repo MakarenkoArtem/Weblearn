@@ -12,18 +12,16 @@ def abort_if_users_not_found(users_id):
         abort(404, message=f"News {users_id} not found")
 
 
-class JobsResource(Resource):
-    def get(self, users_id):
-        abort_if_users_not_found(users_id)
+class NewsResource(Resource):
+    def get(self, news_id):
         session = db_session.create_session()
-        users = session.query(User).get(users_id)
-        return jsonify({'jobs': users.to_dict(
+        news = session.query(News).get(news_id)
+        return jsonify({'news': news.to_dict(
             only=('title', 'content', 'user_id', 'is_private'))})
 
-    def delete(self, users_id):
-        abort_if_users_not_found(users_id)
+    def delete(self, news_id):
         session = db_session.create_session()
-        users = session.query(User).get(users_id)
-        session.delete(users)
+        news = session.query(News).get(news_id)
+        session.delete(news)
         session.commit()
         return jsonify({'success': 'OK'})

@@ -1,42 +1,85 @@
-from flask import Flask, render_template, url_for, redirect, request, session
-from data import db_session
+from flask import Flask, render_template, url_for, redirect, request, session, jsonify, make_response
+from flask_restful import Api
+from flask_login import LoginManager, current_user, login_user
 from werkzeug.security import generate_password_hash
 from forms.user import RegisterForm, EntryForm
 from forms.lesson import LessonForm
 from data.users import User
+from data.images import Image
+from data import db_session
 from data.lessons import Lesson
-from os import listdir, remove, rmdir, mkdir, environ
-
+from os import listdir, remove, rmdir, mkdir, environ, path
 
 app = Flask(__name__)
+api = Api(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'my_secret_key'
-@app.route("/session_test")
-def session_test():
-    visits_count = session.get('visits_count', 0)
-    session['visits_count'] = visits_count + 1
-    print(session)
-    return f"Вы пришли на эту страницу {visits_count + 1} раз"
 
-@app.route('/weblearn/<int:id>')
-def weblearn(id):
+
+@login_manager.user_loader
+def load_user(user_id):
     db_sess = db_session.create_session()
-    lessons = db_sess.query(Lesson).all()[:9]
-    texts = []
-    k = 1
-    for i in lessons:
-        image = open(f'static/img/top_images/{id}_{k}.png', 'wb')
-        image.write(i.top_image)
-        texts.append(i.text.split("\r")[0][:21] + "...")
-        k += 1
-    return render_template("weblearn.html", id=id, lessons=lessons, texts=texts)
+    return db_sess.query(User).get(user_id)
 
-@app.route('/lesson/<int:lesson>/<int:id>')
-def lesson(lesson, id):
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': str(error)}), 404)
+
+
+@app.route('/weblearn')
+@app.route('/weblearn/page=<int:page>')
+def weblearn(page=1):
+    try:
+        id = current_user.id
+    except AttributeError:
+        id = 0
+    # print(vars(current_user))
+    # print(session.items())
+    db_sess = db_session.create_session()
+    im = db_sess.query(User).filter(User.id == id).first()
+    with open(f"static/img/{id}.png", "wb") as file:
+        file.write(im.image)
+    lessons = db_sess.query(Lesson).all()[(page - 1) * 12:page * 12]
+    texts = []
+    [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
+     i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
+    img = []
+    for i in lessons:
+        open(f'static/img/top_images/{id}_{i.id}.png', 'wb').write(i.top_image)
+        img.append(f'{id}_{i.id}.png')
+        texts.append(i.text.split("\r")[0][:31] + "...")
+    c = len(db_sess.query(Lesson).all())
+    max = c // 12
+    if c % 12 or c == 0:
+        max += 1
+    pages = {1, max}
+    for i in range(page - 1, page + 2):
+        if 0 < i < max:
+            pages.add(i)
+    pages = list(pages)
+    pages.sort()
+    print(pages)
+    return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts, pages=pages)
+
+
+@app.route('/lesson/<int:lesson>')
+def lesson(lesson):
+    try:
+        id = current_user.id
+    except AttributeError:
+        id = 0
     db_sess = db_session.create_session()
     lesson = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
-    open(f'static/img/top_images/{lesson.author_id}_{lesson.id}.png', 'wb').write(lesson.top_image)
-    images = lesson.images.split(", ")
+    open(f'static/img/top_images/{lesson.id}.png', 'wb').write(lesson.top_image)
+    for i in lesson.images.split(","):
+        img = db_sess.query(Image).filter(Image.id == i).first()
+        print(i, img)
+        open(f'static/img/all_images/{i}.png', 'wb').write(img.image)
+    images = [i + ".png" for i in lesson.images.split(",")]
     return render_template("lesson.html", id=id, lesson=lesson, images=images)
+
 
 @app.route('/')
 def choice():
@@ -55,12 +98,18 @@ def entry():
             return render_template('entry.html',
                                    form=form,
                                    message="Такой пользователь не найден")
-        redirect(f'/weblearn/{user.id}')
+        redirect(f'/weblearn')
     return render_template('entry.html', form=form)
 
 
-@app.route('/add/<int:id>', methods=['GET', 'POST'])
-def add(id):
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    try:
+        id = current_user.id
+    except AttributeError:
+        id = 0
+    if not id:
+        return render_template('none.html', id=id)
     print("?", id)
     form = LessonForm()
     if form.validate_on_submit():
@@ -72,20 +121,23 @@ def add(id):
         if len(dirs):
             k = dirs[-1] + 1
         img = []
+        db_sess = db_session.create_session()
         for i in form.images.data:
-            i.save(f"static/img/all_images/{id}_{k}.jpg")
-            img.append(str(f'{id}_{k}.jpg'))
-            k += 1
-        form.top_image.data.save('static/img/test.png')
-        im = open("static/img/test.png", 'rb')
+            image = i.read()
+            im = db_sess.query(Image).filter(Image.image == image).all()
+            if len(im):
+                img.append(im.id)
+            else:
+                imag = Image(image=image)
+                db_sess.add(imag)
+                d = db_sess.query(Image).filter(Image.image == image).first()
+                img.append(d.id)
         lesson = Lesson(
             author_id=id,
             title=form.title.data,
-            top_image=im.read(),
+            top_image=form.top_image.data.read(),
             text=form.text.data,
-            images=", ".join(img))
-        remove("static/img/test.png")
-        db_sess = db_session.create_session()
+            images=",".join([str(i) for i in img]))
         db_sess.add(lesson)
         db_sess.commit()
         return redirect(url_for('.weblearn', id=id))
@@ -109,25 +161,33 @@ def register():
             nickname=form.nickname.data,
             email=form.email.data,
             city_from=form.city_from.data,
+            image=form.image.data.read(),
             about=form.about.data)
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
+        login_user(user, remember=True)
         print(user.id)
         print(f'/weblearn/{user.id}')
-        return redirect(url_for('.weblearn', id=user.id))
+        session.get('form.email.data', True)
+        return redirect('/weblearn')
     return render_template('register.html', title='Регистрация', form=form)
 
 
-if __name__ == '__main__':
+def main():
+    db_session.global_init()
+    # app.register_blueprint(news)
     try:
         mkdir("static/img/top_images")
     except FileExistsError:
         pass
-    db_session.global_init("db/base_date.db")
     if 'HEROKU' in environ:
         port = int(environ.get("PORT", 5000))
         app.run(host='0.0.0.0', port=port)
     else:
         app.run(port=8080, host='127.0.0.1', debug=True)
     rmdir("static/img/top_images")
+
+
+if __name__ == "__main__":
+    main()

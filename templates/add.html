@@ -1,21 +1,25 @@
 {% extends "template.html" %}
 
 {% block dropdown %}
-<div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-        <img src="/static/img/porsche_1600x1200.jpg" align="right" width="60" height="60"
-             alt="Винни-Пух" class="round">
-    </button>
-    <ul class="dropdown-menu dropdown-menu-right">
-        <li class="dropdown-header">Настройка пользователя</li>
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li class="divider"></li>
-        <li class="dropdown-header">Уроки</li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
-</div>
+{% if id != 0 %}
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            <img src="/static/img/{{ id }}.png" align="right" width="60" height="60"
+                 alt="" class="round">
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li class="dropdown-header">Настройка пользователя</li>
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Уроки</li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+    </div>
+{% else %}
+    </br></br>
+{% endif %}
 {% endblock %}
 {% block content %}
 <div class="container">
@@ -27,7 +31,6 @@
             {% for error in form.title.errors %}
         <p class="alert alert-danger" role="alert">
             {{ error }}
-        </p>
         {% endfor %}
         </p>
         <p>
@@ -36,7 +39,6 @@
             {% for error in form.top_image.errors %}
         <p class="alert alert-danger" role="alert">
             {{ error }}
-        </p>
         {% endfor %}
         </p>
         <p>
@@ -45,7 +47,6 @@
             {% for error in form.text.errors %}
         <p class="alert alert-danger" role="alert">
             {{ error }}
-        </p>
         {% endfor %}
         </p>
         <p>
@@ -54,7 +55,6 @@
             {% for error in form.images.errors %}
         <p class="alert alert-danger" role="alert">
             {{ error }}
-        </p>
         {% endfor %}
         </p>
         <a href="/weblearn/{{ id }}" style="float: left;" class="btn btn-danger">Назад

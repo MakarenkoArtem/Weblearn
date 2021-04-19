@@ -1,21 +1,25 @@
 {% extends "template.html" %}
 
 {% block dropdown %}
-<div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-        <img src="/static/img/porsche_1600x1200.jpg" align="right" width="60" height="60"
-             alt="Винни-Пух" class="round">
-    </button>
-    <ul class="dropdown-menu dropdown-menu-right">
-        <li class="dropdown-header">Настройка пользователя</li>
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li class="divider"></li>
-        <li class="dropdown-header">Уроки</li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
-</div>
+{% if id != 0 %}
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            <img src="/static/img/{{ id }}.png" align="right" width="60" height="60"
+                 alt="" class="round">
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li class="dropdown-header">Настройка пользователя</li>
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Уроки</li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+    </div>
+{% else %}
+    </br></br>
+{% endif %}
 {% endblock %}
 {% block content %}
 <div class="container" style="width: 70%;">
@@ -28,12 +32,12 @@
             <tr>
         {% endif %}
         <td>
-            <div class="card" style="width: 20rem;">
-                <img src="/static/img/top_images/{{ id }}_{{ loop.index }}.png" class="card-img-top" weight="" alt="...">
+            <div class="card" style="width: 50%;">
+                <img src="/static/img/top_images/{{ img[loop.index-1] }}" class="card-img-top" height="280px" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ lesson.title }}</h5>
                     <p class="card-text">{{ texts[loop.index - 1] }}</p>
-                    <a href="/lesson/{{ loop.index }}/{{ id }}" class="btn btn-primary">Читать</a>
+                    <a href="/lesson/{{ lesson.id }}" class="btn btn-primary">Читать</a>
                 </div>
             </div>
         </td>
@@ -42,8 +46,16 @@
         {% endif %}
     {% endfor %}
 </table>
+<div align="bottom">
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+      {% for page in pages %}
+            <li class="page-item"><a class="page-link" href="weblearn/page={{ page }}">{{ page }}</a></li>
+      {% endfor %}
+  </ul>
+</nav></div>
 </div>
-<a href="/add/{{ id }}" style="bottom: 2.4%; right: 1.6%; position: fixed;">
+<a href="/add" style="bottom: 2.4%; right: 1.6%; position: fixed;">
     <img src="/static/img/icons8-libre-office-writer.svg">
 </a>
 {% endblock %}
