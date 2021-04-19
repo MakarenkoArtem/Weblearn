@@ -1,6 +1,7 @@
 flask
 sqlalchemy
 flask_wtf
+flask_restful
 sqlalchemy_serializer
 wtforms
 requests
