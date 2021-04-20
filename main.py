@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, redirect, request, session, jsonify, make_response
 from flask_restful import Api
 from flask_login import LoginManager, current_user, login_user
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 from forms.user import RegisterForm, EntryForm
 from forms.lesson import LessonForm
 from data.users import User
@@ -112,14 +112,17 @@ def entry():
     form = EntryForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(
-            User.nickname == form.nickname.data, User.hashed_password == generate_password_hash(
-                form.password.data)).first()
-        if user is None:
+        us = None
+        for user in db_sess.query(User).all():
+            if user.nickname == form.nickname.data and check_password_hash(user.hashed_password, form.password.data):
+                us = user
+                break
+        if us is None:
             return render_template('entry.html',
                                    form=form,
                                    message="Такой пользователь не найден")
-        redirect(f'/weblearn')
+        login_user(us, remember=True)
+        return redirect('/weblearn')
     return render_template('entry.html', form=form)
 
 
