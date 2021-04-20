@@ -1,26 +1,5 @@
 {% extends "template.html" %}
 
-{% block dropdown %}
-{% if id != 0 %}
-    <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-            <img src="/static/img/{{ id }}.png" align="right" width="60" height="60"
-                 alt="" class="round">
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right">
-            <li class="dropdown-header">Настройка пользователя</li>
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li class="divider"></li>
-            <li class="dropdown-header">Уроки</li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-    </div>
-{% else %}
-    </br></br>
-{% endif %}
-{% endblock %}
 {% block content %}
 <div class="container">
     <h1 align="center">Для добавления урока нужно зарегистрироваться</h1></br>

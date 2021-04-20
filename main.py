@@ -40,7 +40,7 @@ def weblearn(page=1):
     # print(session.items())
     db_sess = db_session.create_session()
     im = db_sess.query(User).filter(User.id == id).first()
-    with open(f"static/img/{id}.png", "wb") as file:
+    with open(f"static/img/user_images/{id}.png", "wb") as file:
         file.write(im.image)
     lessons = db_sess.query(Lesson).all()[(page - 1) * 12:page * 12]
     texts = []
