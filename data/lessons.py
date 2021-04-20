@@ -13,4 +13,4 @@ class Lesson(SqlAlchemyBase):
     top_image = sqlalchemy.Column(sqlalchemy.BLOB, nullable=False)
     text = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     images = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
+    #modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
