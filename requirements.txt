@@ -7,3 +7,4 @@ sqlalchemy_serializer
 wtforms
 requests
 psycopg2
+pillow
