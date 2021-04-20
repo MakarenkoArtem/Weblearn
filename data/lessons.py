@@ -12,5 +12,5 @@ class Lesson(SqlAlchemyBase):
     title = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     top_image = sqlalchemy.Column(sqlalchemy.LargeBinary, nullable=False)
     text = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    images = sqlalchemy.Column(sqlalchemy.LargeBinary, nullable=True)
+    images = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     #modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
