@@ -65,7 +65,8 @@ def weblearn(page=1):
     if pages[-1] - 1 not in pages and len(pages) > 1:
         pages.insert(-2, "...")
     print(pages)
-    return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts, pages=pages)
+    return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts,
+                           pages=pages)
 
 
 @app.route('/lesson/<int:lesson>')
@@ -109,9 +110,13 @@ def entry():
 @app.route('/add_test', methods=['GET', 'POST'])
 def add_test():
     return "Здесь будет создание теста"
+
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     return "Здесь будет сам тест"
+
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     try:
