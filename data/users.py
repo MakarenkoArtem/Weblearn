@@ -11,7 +11,7 @@ class User(SqlAlchemyBase, UserMixin):
     nickname = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     city_from = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    image = sqlalchemy.Column(sqlalchemy.BLOB, nullable=False)
+    image = sqlalchemy.Column(sqlalchemy.LargeBinary, nullable=False)
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     #modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)

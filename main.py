@@ -6,6 +6,7 @@ from forms.user import RegisterForm, EntryForm
 from forms.lesson import LessonForm
 from data.users import User
 from data.images import Image
+from  forms.question import QuestionForm
 from data import db_session
 from data.lessons import Lesson
 from os import listdir, remove, rmdir, mkdir, environ, path
@@ -107,9 +108,16 @@ def entry():
     return render_template('entry.html', form=form)
 
 
-@app.route('/add_test', methods=['GET', 'POST'])
-def add_test():
-    return "Здесь будет создание теста"
+@app.route('/add_question', methods=['GET', 'POST'])
+def add_question():
+    try:
+        id = current_user.id
+    except AttributeError:
+        id = 0
+    form = QuestionForm()
+    if form.validate_on_submit():
+        return redirect('/weblearn')
+    return render_template('add_question.html', form=form, id=id)
 
 
 @app.route('/test', methods=['GET', 'POST'])
@@ -158,7 +166,7 @@ def add():
         db_sess.add(lesson)
         db_sess.commit()
         if form.test.data:
-            return redirect('/add_test')
+            return redirect('/add_question')
         else:
             return redirect('/weblearn')
     return render_template('add.html', form=form, id=id)

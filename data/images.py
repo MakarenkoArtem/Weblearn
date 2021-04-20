@@ -7,4 +7,4 @@ class Image(SqlAlchemyBase):
     __tablename__ = 'images'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    image = sqlalchemy.Column(sqlalchemy.BLOB, nullable=False)
+    image = sqlalchemy.Column(sqlalchemy.LargeBinary, nullable=False)

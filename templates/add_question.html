@@ -1,0 +1,81 @@
+{% extends "template.html" %}
+
+{% block dropdown %}
+{% if id != 0 %}
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            <img src="/static/img/{{ id }}.png" align="right" width="60" height="60"
+                 alt="" class="round">
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li class="dropdown-header">Настройка пользователя</li>
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Уроки</li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+    </div>
+{% else %}
+    </br></br>
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <form action="" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.question.label }}<br>
+            {{ form.question(class="form-control") }}<br>
+            {% for error in form.question.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.variants_f.label }}<br>
+            {{ form.variants_f(class="form-control") }}<br>
+            {% for error in form.variants_f.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.variants_s.label }}<br>
+            {{ form.variants_s(class="form-control") }}<br>
+            {% for error in form.variants_s.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.variants_t.label }}
+            {{ form.variants_t(class="form-control") }}
+            {% for error in form.variants_t.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.variants_fo.label }}
+            {{ form.variants_fo(class="form-control") }}
+            {% for error in form.variants_fo.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.image.label }}<br>
+            {{ form.image(class="form-control-file") }}<br>
+            {% for error in form.image.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        {% endfor %}
+        </p>
+        <a href="/weblearn/{{ id }}" style="float: left;" class="btn btn-danger">Назад
+        </a>
+        <p align="right">{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    </form>
+</div>
+{% endblock %}
