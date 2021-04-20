@@ -20,7 +20,7 @@ def global_init():
     else:
         from config import LOCAL_DB, DB  # сработает локально
         conn_str = LOCAL_DB
-        conn_str = DB.replace('postgres://', 'postgresql://')
+        #conn_str = DB.replace('postgres://', 'postgresql://')
     print(conn_str)
     engine = sa.create_engine(conn_str, echo=False)
     __factory = orm.sessionmaker(bind=engine)

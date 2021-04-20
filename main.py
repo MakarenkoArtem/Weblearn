@@ -5,19 +5,28 @@ from werkzeug.security import generate_password_hash
 from forms.user import RegisterForm, EntryForm
 from forms.lesson import LessonForm
 from data.users import User
+from data.questions import Question
 from data.images import Image
-from  forms.question import QuestionForm
+from forms.question import QuestionForm
 from data import db_session
 from data.lessons import Lesson
 from os import listdir, remove, rmdir, mkdir, environ, path
-
+from PIL import Image as Imagepil
 app = Flask(__name__)
 api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'my_secret_key'
 
-
+def resize(pic, width=700, height=450):
+    with open("static/img/0.png", "wb") as file:
+        file.write(pic)
+    im = Imagepil.open("static/img/0.png")
+    im = im.resize((width, height))
+    im.save("static/img/0.png")
+    im = open("static/img/0.png", "rb").read()
+    remove("static/img/0.png")
+    return im
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
@@ -26,7 +35,11 @@ def load_user(user_id):
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error': str(error)}), 404)
+    try:
+        id = current_user.id
+    except AttributeError:
+        id = 0
+    return render_template("404.html", id=id)
 
 
 @app.route('/weblearn')
@@ -76,6 +89,8 @@ def lesson(lesson):
         id = current_user.id
     except AttributeError:
         id = 0
+    [remove(f"static/img/top_images/{i}") for i in listdir("static/img/top_images") if
+     i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
     db_sess = db_session.create_session()
     lesson = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
     open(f'static/img/top_images/{lesson.id}.png', 'wb').write(lesson.top_image)
@@ -116,7 +131,31 @@ def add_question():
         id = 0
     form = QuestionForm()
     if form.validate_on_submit():
-        return redirect('/weblearn')
+        db_sess = db_session.create_session()
+        '''image = form.image.data
+        print('image', image)
+        if image is not None:
+            image = image.read()
+            im = db_sess.query(Image).filter(Image.image == image).all()
+            if len(im):
+                pic = im[0].id
+            else:
+                imag = Image(image=image)
+                db_sess.add(imag)
+                d = db_sess.query(Image).filter(Image.image == image).first()
+                pic = d.id'''
+        '''else:
+            pass#image = b''
+        print(1, image)'''
+        question = Question(
+            question=form.question.data,
+            variants_f=form.variants_f.data,
+            variants_s=form.variants_s.data,
+            variants_t=form.variants_t.data,
+            variants_fo=form.variants_fo.data, image=resize(form.top_image.data.read()))
+        #print(question.image)
+        db_sess.add(question)
+        db_sess.commit()
     return render_template('add_question.html', form=form, id=id)
 
 
@@ -132,23 +171,19 @@ def add():
     except AttributeError:
         id = 0
     if not id:
-        return render_template('none.html', id=id)
+        return render_template('none.html')
     print("?", id)
     form = LessonForm()
     if form.validate_on_submit():
-        k = 1
-        dirs = [int(i.split("_")[-1].split(".")[0]) for i in listdir("static/img/all_images") if
-                i.split("_")[0] == str(id) and i.split(".")[-1] == 'jpg']
-        print(dirs)
-        dirs.sort()
-        if len(dirs):
-            k = dirs[-1] + 1
+        [remove(f"static/img/top_images/{i}") for i in listdir("static/img/top_images") if
+         i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
+        [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
+         i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
         img = []
         db_sess = db_session.create_session()
         for i in form.images.data:
             image = i.read()
             im = db_sess.query(Image).filter(Image.image == image).all()
-            print(im)
             if len(im):
                 print(im[0])
                 img.append(im[0].id)
@@ -160,7 +195,7 @@ def add():
         lesson = Lesson(
             author_id=id,
             title=form.title.data,
-            top_image=form.top_image.data.read(),
+            top_image=resize(form.top_image.data.read()),
             text=form.text.data,
             images=",".join([str(i) for i in img]))
         db_sess.add(lesson)
@@ -189,7 +224,7 @@ def register():
             nickname=form.nickname.data,
             email=form.email.data,
             city_from=form.city_from.data,
-            image=form.image.data.read(),
+            image=resize(form.image.data.read(), width=450, height=400),
             about=form.about.data)
         user.set_password(form.password.data)
         db_sess.add(user)

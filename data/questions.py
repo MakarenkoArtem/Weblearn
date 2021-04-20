@@ -11,5 +11,5 @@ class Question(SqlAlchemyBase):
     variants_f = sqlalchemy.Column(sqlalchemy.String)
     variants_s = sqlalchemy.Column(sqlalchemy.String)
     variants_t = sqlalchemy.Column(sqlalchemy.String)
-    variants_f = sqlalchemy.Column(sqlalchemy.String)
-    image = sqlalchemy.Column(sqlalchemy.LargeBinary, nullable=False)
+    variants_fo = sqlalchemy.Column(sqlalchemy.String)
+    image = sqlalchemy.Column(sqlalchemy.LargeBinary)
