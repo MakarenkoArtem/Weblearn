@@ -10,7 +10,7 @@ class RegisterForm(FlaskForm):
     email = EmailField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
-    image = FileField('Картинка', validators=[FileRequired(), FileAllowed(['jpg', 'png', "bmp"], 'Images only!')])
+    image = FileField('Картинка', validators=[FileAllowed(['jpg', 'png', "bmp"], 'Images only!')])
     city_from = StringField('Город', default="")
     about = TextAreaField("Немного о себе")
     submit = SubmitField('Зарегистрироваться')

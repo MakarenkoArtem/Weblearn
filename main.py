@@ -33,6 +33,14 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
+@app.errorhandler(500)
+def not_found(error):
+    try:
+        id = current_user.id
+    except AttributeError:
+        id = 0
+    return render_template("404.html", id=id)
+
 @app.errorhandler(404)
 def not_found(error):
     try:
@@ -52,9 +60,10 @@ def weblearn(page=1):
     # print(vars(current_user))
     # print(session.items())
     db_sess = db_session.create_session()
-    im = db_sess.query(User).filter(User.id == id).first()
-    with open(f"static/img/user_images/{id}.png", "wb") as file:
-        file.write(im.image)
+    if id:
+        im = db_sess.query(User).filter(User.id == id).first()
+        with open(f"static/img/user_images/{id}.png", "wb") as file:
+            file.write(im.image)
     lessons = db_sess.query(Lesson).all()[(page - 1) * 12:page * 12]
     texts = []
     [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
@@ -174,7 +183,11 @@ def add():
     except AttributeError:
         id = 0
     if not id:
-        return render_template('none.html')
+        [remove(f"static/img/top_images/{i}") for i in listdir("static/img/top_images") if
+         i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
+        [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
+         i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
+        return render_template('none.html', id=id)
     print("?", id)
     form = LessonForm()
     if form.validate_on_submit():
@@ -223,11 +236,14 @@ def register():
             return render_template('register.html',
                                    form=form,
                                    message="Такой пользователь уже есть")
+        x = form.image.data
+        if x is None:
+            x = open("static/img/user_images/0.png", "rb")
         user = User(
             nickname=form.nickname.data,
             email=form.email.data,
             city_from=form.city_from.data,
-            image=resize(form.image.data.read(), width=450, height=400),
+            image=resize(x.read(), width=450, height=400),
             about=form.about.data)
         user.set_password(form.password.data)
         db_sess.add(user)
