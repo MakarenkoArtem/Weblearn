@@ -20,18 +20,7 @@
 {% endif %}
 {% endblock %}
 {% block content %}
-<div class="container">
-    <div align="center"><img src="/static/img/tests_images/{{ lesson }}_{{ page }}.png" width="40%"></div>
-    <div class="form-group">
-        <label class="form-check">{{ quest }}</label>
-        {% for var in varia %}
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="sex" id={{ var }} value={{ var }} checked>
-                <label class="form-check-label" for={{ var }}>{{ var }}</label>
-            </div>
-        {% endfor %}
-    </div>
-    <a href="/weblearn" style="position: relative; float: left; left: 6%;" class="btn btn-primary"><h2>Завершить тест</h2></a>
-    <a href="/test/{{ lesson }}/{{ page + 1 }}" style="position: relative; float: right; right: 6%;" class="btn btn-success"><h2>Перейти к следующему вопросу</h2></a>
-</div>
+<h3 align="center"><font color="blue">Тест завершён</font></h3>
+<div align="center" style="bottom: 5%; right: 40%; position: fixed;">
+    <a href="/weblearn" class="btn btn-success btn-lg"><h3>Вернуться на главную</h3></a></div>
 {% endblock %}

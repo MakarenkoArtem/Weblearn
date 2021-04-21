@@ -203,6 +203,10 @@ def add_question():
 @app.route('/test/<int:lesson>', methods=['GET', 'POST'])
 @app.route('/test/<int:lesson>/<int:page>', methods=['GET', 'POST'])
 def test(lesson, page=0):
+    try:
+        id = current_user.id
+    except AttributeError:
+        id = 0
     db_sess = db_session.create_session()
     test = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
     print(test)
@@ -212,8 +216,10 @@ def test(lesson, page=0):
         m = test.questions.split(",")[page]
         test = db_sess.query(Question).filter(Question.id == int(m)).first()
         varia = [test.variants_f, test.variants_s, test.variants_t, test.variants_fo]
+        with open(f"static/img/tests_images/{lesson}_{page}.png", "wb") as file:
+            file.write(test.image)
     except IndexError:
-        return "тест окончен"
+        return render_template('end_test.html', id=id)
     return render_template('test.html', varia=varia, id=id, lesson=lesson, page=page)
 
 
