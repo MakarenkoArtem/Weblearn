@@ -32,7 +32,7 @@
             <tr>
         {% endif %}
         <td>
-            <div class="card">
+            <div class="card" style="width: 290px; position: relative;">
                 <img src="/static/img/top_images/{{ img[loop.index-1] }}" class="card-img-top" height="290px" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ lesson.title }}</h5>
@@ -46,7 +46,7 @@
         {% endif %}
     {% endfor %}
 </table>
-</div></div>
+</div>
 <div align="center" style="bottom: 12.4%; position: relative;">
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
