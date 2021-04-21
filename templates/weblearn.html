@@ -24,7 +24,7 @@
 {% block content %}
 <div class="container" style="width: 70%;">
     <h3 align="center"><font color="blue">Здесь распологаются уроки с заданиями к ним</font></h3>
-</div>
+
 <br><br>
 <table class="table.table-borderless" border-spacing="50px" align="center">
     {% for lesson in lessons %}
@@ -32,7 +32,7 @@
             <tr>
         {% endif %}
         <td>
-            <div class="card" style="width: 290px; position: relative;">
+            <div class="card w-30">
                 <img src="/static/img/top_images/{{ img[loop.index-1] }}" class="card-img-top" height="290px" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ lesson.title }}</h5>
@@ -46,7 +46,7 @@
         {% endif %}
     {% endfor %}
 </table>
-</div>
+</div></div>
 <div align="center" style="bottom: 12.4%; position: relative;">
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">

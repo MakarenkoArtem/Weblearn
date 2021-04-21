@@ -87,9 +87,10 @@ def weblearn(page=1):
         pages.insert(1, "...")
     if pages[-1] - 1 not in pages and len(pages) > 1:
         pages.insert(-2, "...")
+    if len(pages) == 1:
+        pages = []
     print(pages)
-    return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts,
-                           pages=pages)
+    return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts, pages=pages)
 
 
 @app.route('/lesson/<int:lesson>')
