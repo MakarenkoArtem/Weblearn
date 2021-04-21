@@ -104,6 +104,7 @@ def lesson(lesson):
     db_sess = db_session.create_session()
     lesson = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
     open(f'static/img/top_images/{lesson.id}.png', 'wb').write(lesson.top_image)
+    print(lesson.images)
     for i in lesson.images.split(","):
         img = db_sess.query(Image).filter(Image.id == i).first()
         print(i, img)
