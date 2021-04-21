@@ -1,6 +1,7 @@
 import datetime
 import sqlalchemy
 from .db_session import SqlAlchemyBase
+from sqlalchemy_serializer import SerializerMixin
 
 
 class Question(SqlAlchemyBase):
@@ -12,4 +13,5 @@ class Question(SqlAlchemyBase):
     variants_s = sqlalchemy.Column(sqlalchemy.String)
     variants_t = sqlalchemy.Column(sqlalchemy.String)
     variants_fo = sqlalchemy.Column(sqlalchemy.String)
+    right = sqlalchemy.Column(sqlalchemy.Integer)
     image = sqlalchemy.Column(sqlalchemy.LargeBinary)

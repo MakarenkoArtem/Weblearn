@@ -6,17 +6,21 @@ from forms.user import RegisterForm, EntryForm
 from forms.lesson import LessonForm
 from data.users import User
 from data.questions import Question
+from data.tests import Test
 from data.images import Image
 from forms.question import QuestionForm
 from data import db_session
 from data.lessons import Lesson
 from os import listdir, remove, rmdir, mkdir, environ, path
 from PIL import Image as Imagepil
+import sqlalchemy
+
 app = Flask(__name__)
 api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'my_secret_key'
+
 
 def resize(pic, width=700, height=450):
     with open("static/img/0.png", "wb") as file:
@@ -27,6 +31,8 @@ def resize(pic, width=700, height=450):
     im = open("static/img/0.png", "rb").read()
     remove("static/img/0.png")
     return im
+
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
@@ -40,6 +46,7 @@ def not_found(error):
     except AttributeError:
         id = 0
     return render_template("404.html", id=id)
+
 
 @app.errorhandler(404)
 def not_found(error):
@@ -60,6 +67,20 @@ def weblearn(page=1):
     # print(vars(current_user))
     # print(session.items())
     db_sess = db_session.create_session()
+    x = db_sess.query(Test).filter(Test.author_id == str(id), Test.questions == f"user_{id}").all()
+    while len(x):
+        try:
+            for i in db_sess.query(Lesson).filter(Lesson.test == str(x[0].id)).all():
+                i.test = ""
+                db_sess.commit()
+            db_sess.delete(x[0])
+            db_sess.commit()
+        except sqlalchemy.exc.InvalidRequestError:
+            pass
+        finally:
+            db_sess = db_session.create_session()
+            x = db_sess.query(Test).filter(Test.author_id == str(id),
+                                           Test.questions == f"user_{id}").all()
     if id:
         im = db_sess.query(User).filter(User.id == id).first()
         with open(f"static/img/user_images/{id}.png", "wb") as file:
@@ -90,7 +111,8 @@ def weblearn(page=1):
     if len(pages) == 1:
         pages = []
     print(pages)
-    return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts, pages=pages)
+    return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts,
+                           pages=pages)
 
 
 @app.route('/lesson/<int:lesson>')
@@ -110,7 +132,7 @@ def lesson(lesson):
         print(i, img)
         open(f'static/img/all_images/{i}.png', 'wb').write(img.image)
     images = [i + ".png" for i in lesson.images.split(",")]
-    return render_template("lesson.html", id=id, lesson=lesson, images=images)
+    return render_template("lesson.html", id=id, lesson=lesson, images=images, test=lesson.test)
 
 
 @app.route('/')
@@ -125,7 +147,8 @@ def entry():
         db_sess = db_session.create_session()
         us = None
         for user in db_sess.query(User).all():
-            if user.nickname == form.nickname.data and check_password_hash(user.hashed_password, form.password.data):
+            if user.nickname == form.nickname.data and check_password_hash(user.hashed_password,
+                                                                           form.password.data):
                 us = user
                 break
         if us is None:
@@ -139,6 +162,7 @@ def entry():
 
 @app.route('/add_question', methods=['GET', 'POST'])
 def add_question():
+    print("!!!!", vars(current_user))
     try:
         id = current_user.id
     except AttributeError:
@@ -146,36 +170,51 @@ def add_question():
     form = QuestionForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        '''image = form.image.data
-        print('image', image)
-        if image is not None:
-            image = image.read()
-            im = db_sess.query(Image).filter(Image.image == image).all()
-            if len(im):
-                pic = im[0].id
-            else:
-                imag = Image(image=image)
-                db_sess.add(imag)
-                d = db_sess.query(Image).filter(Image.image == image).first()
-                pic = d.id'''
-        '''else:
-            pass#image = b''
-        print(1, image)'''
+        print()
+        x = form.image.data
+        if x is None:
+            x = open("static/img/user_images/0.png", "rb").read()
+        else:
+            x = x.read()
         question = Question(
             question=form.question.data,
             variants_f=form.variants_f.data,
             variants_s=form.variants_s.data,
-            variants_t=form.variants_t.data,
-            variants_fo=form.variants_fo.data, image=resize(form.top_image.data.read()))
-        #print(question.image)
+            variants_t=form.variants_t.data, right=int(request.form['var']),
+            variants_fo=form.variants_fo.data, image=resize(x))
+        # print(question.image)
         db_sess.add(question)
+        db_sess.commit()
+        print("-" * 100)
+        print(question.id)
+        db_sess = db_session.create_session()
+        test = db_sess.query(Test).filter(Test.author_id == f"{id}").first()
+        print(test.questions)
+        print(vars(question))
+        if test.questions == f"user_{id}":
+            test.questions = str(question.id)
+        else:
+            test.questions += "," + str(question.id)
+        db_sess.add(test)
         db_sess.commit()
     return render_template('add_question.html', form=form, id=id)
 
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    return "Здесь будет сам тест"
+@app.route('/test/<int:lesson>', methods=['GET', 'POST'])
+@app.route('/test/<int:lesson>/<int:page>', methods=['GET', 'POST'])
+def test(lesson, page=0):
+    db_sess = db_session.create_session()
+    test = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
+    print(test)
+    test = db_sess.query(Test).filter(Test.id == int(test.test)).first()
+    print(test)
+    try:
+        m = test.questions.split(",")[page]
+        test = db_sess.query(Question).filter(Question.id == int(m)).first()
+        varia = [test.variants_f, test.variants_s, test.variants_t, test.variants_fo]
+    except IndexError:
+        return "тест окончен"
+    return render_template('test.html', varia=varia, id=id, lesson=lesson, page=page)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -184,6 +223,10 @@ def add():
         id = current_user.id
     except AttributeError:
         id = 0
+    db_sess = db_session.create_session()
+    if db_sess.query(Test).filter(Test.author_id == str(id),
+                                  Test.questions == f"user_{id}").first() is not None:
+        return "Нельзя создавать несколько тестов одновременно"
     if not id:
         [remove(f"static/img/top_images/{i}") for i in listdir("static/img/top_images") if
          i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
@@ -198,7 +241,6 @@ def add():
         [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
          i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
         img = []
-        db_sess = db_session.create_session()
         for i in form.images.data:
             image = i.read()
             im = db_sess.query(Image).filter(Image.image == image).all()
@@ -210,16 +252,27 @@ def add():
                 db_sess.add(imag)
                 d = db_sess.query(Image).filter(Image.image == image).first()
                 img.append(d.id)
+        test_id = ""
+        if form.test.data:
+            print(1)
+            test = Test(author_id=id, questions=f'user_{id}')
+            print(2)
+            db_sess.add(test)
+            print(3)
+            db_sess.commit()
+            print(4)
+            db_sess = db_session.create_session()
+            test_id = str(test.id)
         lesson = Lesson(
             author_id=id,
             title=form.title.data,
             top_image=resize(form.top_image.data.read()),
             text=form.text.data,
-            images=",".join([str(i) for i in img]))
+            images=",".join([str(i) for i in img]), test=test_id)
         db_sess.add(lesson)
         db_sess.commit()
         if form.test.data:
-            return redirect('/add_question')
+            return redirect(f'/add_question')
         else:
             return redirect('/weblearn')
     return render_template('add.html', form=form, id=id)

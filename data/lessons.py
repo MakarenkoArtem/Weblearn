@@ -1,6 +1,8 @@
 import datetime
 import sqlalchemy
 from .db_session import SqlAlchemyBase
+from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
 
 
 class Lesson(SqlAlchemyBase):
@@ -12,5 +14,5 @@ class Lesson(SqlAlchemyBase):
     title = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     top_image = sqlalchemy.Column(sqlalchemy.LargeBinary, nullable=False)
     text = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    test = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     images = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    #modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
