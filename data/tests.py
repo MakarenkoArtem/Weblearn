@@ -11,3 +11,4 @@ class Test(SqlAlchemyBase, UserMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     author_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     questions = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    created = sqlalchemy.Column(sqlalchemy.Integer, nullable=False, default=1)

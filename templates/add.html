@@ -24,6 +24,9 @@
 <div class="container">
     <form action="" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
+        {% if err %}
+        <div class="alert alert-danger" role="alert"><h2 align="right"><font color="red">{{ err }}</font></h2></div>
+        {% endif %}
         <p>
             {{ form.title.label }}<br>
             {{ form.title(class="form-control") }}<br>

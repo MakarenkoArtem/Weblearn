@@ -37,6 +37,9 @@
                     <h5 class="card-title">{{ lesson.title }}</h5>
                     <p class="card-text">{{ texts[loop.index - 1] }}</p>
                     <a href="/lesson/{{ lesson.id }}" class="btn btn-primary">Читать</a>
+                    {% if lesson.author_id == id %}
+                    <div style="float: right; position: relative;"><a href="/del/{{ lesson.id }}" class="btn btn-danger">Удалить</a></div>
+                    {% endif %}
                 </div>
             </div>
         </td>

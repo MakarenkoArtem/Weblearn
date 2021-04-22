@@ -23,13 +23,13 @@ app.config['SECRET_KEY'] = 'my_secret_key'
 
 
 def resize(pic, width=700, height=450):
-    with open("static/img/0.png", "wb") as file:
+    with open("static/img/!!!!!!!!0.png", "wb") as file:
         file.write(pic)
-    im = Imagepil.open("static/img/0.png")
+    im = Imagepil.open("static/img/!!!!!!!!0.png")
     im = im.resize((width, height))
-    im.save("static/img/0.png")
-    im = open("static/img/0.png", "rb").read()
-    remove("static/img/0.png")
+    im.save("static/img/!!!!!!!!0.png")
+    im = open("static/img/!!!!!!!!0.png", "rb").read()
+    remove("static/img/!!!!!!!!0.png")
     return im
 
 
@@ -57,6 +57,38 @@ def not_found(error):
     return render_template("404.html", id=id)
 
 
+@app.route('/del/<int:lesson>')
+def del_lesson(lesson):
+    try:
+        id = current_user.id
+    except AttributeError:
+        id = 0
+    db_sess = db_session.create_session()
+    d = db_sess.query(Lesson).filter(Lesson.author_id == id, Lesson.id == lesson).first()
+    if d is None:
+        return redirect('/weblearn')
+    t = d.test
+    db_sess.delete(d)
+    db_sess.commit()
+    try:
+        t = int(t)
+    except ValueError:
+        return redirect('/weblearn')
+    db_sess = db_session.create_session()
+    d = db_sess.query(Test).filter(Test.id == t).first()
+    if d is None:
+        return redirect('/weblearn')
+    s = d.questions.split(",")
+    for i in s:
+        db_sess = db_session.create_session()
+        d = db_sess.query(Question).filter(Question.id == int(i)).first()
+        if d is None:
+            continue
+        db_sess.delete(d)
+        db_sess.commit()
+    return redirect('/weblearn')
+
+
 @app.route('/weblearn')
 @app.route('/weblearn/page=<int:page>')
 def weblearn(page=1):
@@ -64,23 +96,26 @@ def weblearn(page=1):
         id = current_user.id
     except AttributeError:
         id = 0
-    # print(vars(current_user))
-    # print(session.items())
     db_sess = db_session.create_session()
-    x = db_sess.query(Test).filter(Test.author_id == str(id), Test.questions == f"user_{id}").all()
-    while len(x):
+    d = db_sess.query(Test).filter(Test.author_id == id, Test.created).first()
+    if d is not None:
+        d.created = 0
+        db_sess.commit()
+        db_sess = db_session.create_session()
+    for x in db_sess.query(Test).filter(Test.author_id == id, Test.questions == "",
+                                        Test.created == 0).all():
         try:
-            for i in db_sess.query(Lesson).filter(Lesson.test == str(x[0].id)).all():
+            s = str(x.id)
+            db_sess.delete(x)
+            for i in db_sess.query(Lesson).filter(Lesson.test == s).all():
                 i.test = ""
                 db_sess.commit()
-            db_sess.delete(x[0])
-            db_sess.commit()
-        except sqlalchemy.exc.InvalidRequestError:
-            pass
+                db_sess = db_session.create_session()
+        except sqlalchemy.exc.InvalidRequestError as e:
+            print("Не удалось удалить")
         finally:
+            db_sess.commit()
             db_sess = db_session.create_session()
-            x = db_sess.query(Test).filter(Test.author_id == str(id),
-                                           Test.questions == f"user_{id}").all()
     if id:
         im = db_sess.query(User).filter(User.id == id).first()
         with open(f"static/img/user_images/{id}.png", "wb") as file:
@@ -110,7 +145,6 @@ def weblearn(page=1):
         pages.insert(-2, "...")
     if len(pages) == 1:
         pages = []
-    print(pages)
     return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts,
                            pages=pages)
 
@@ -125,13 +159,13 @@ def lesson(lesson):
      i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
     db_sess = db_session.create_session()
     lesson = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
-    open(f'static/img/top_images/{lesson.id}.png', 'wb').write(lesson.top_image)
-    print(lesson.images)
-    for i in lesson.images.split(","):
-        img = db_sess.query(Image).filter(Image.id == i).first()
-        print(i, img)
-        open(f'static/img/all_images/{i}.png', 'wb').write(img.image)
-    images = [i + ".png" for i in lesson.images.split(",")]
+    open(f'static/img/top_images/{id}_{lesson.id}.png', 'wb').write(lesson.top_image)
+    images = []
+    if lesson.images:
+        for i in lesson.images.split(","):
+            img = db_sess.query(Image).filter(Image.id == i).first()
+            open(f'static/img/all_images/{i}.png', 'wb').write(img.image)
+        images = [i + ".png" for i in lesson.images.split(",")]
     return render_template("lesson.html", id=id, lesson=lesson, images=images, test=lesson.test)
 
 
@@ -162,7 +196,6 @@ def entry():
 
 @app.route('/add_question', methods=['GET', 'POST'])
 def add_question():
-    print("!!!!", vars(current_user))
     try:
         id = current_user.id
     except AttributeError:
@@ -170,10 +203,9 @@ def add_question():
     form = QuestionForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        print()
         x = form.image.data
         if x is None:
-            x = open("static/img/user_images/0.png", "rb").read()
+            x = open("static/img/tests_images/0.png", "rb").read()
         else:
             x = x.read()
         question = Question(
@@ -182,16 +214,11 @@ def add_question():
             variants_s=form.variants_s.data,
             variants_t=form.variants_t.data, right=int(request.form['var']),
             variants_fo=form.variants_fo.data, image=resize(x))
-        # print(question.image)
         db_sess.add(question)
         db_sess.commit()
-        print("-" * 100)
-        print(question.id)
         db_sess = db_session.create_session()
-        test = db_sess.query(Test).filter(Test.author_id == f"{id}").first()
-        print(test.questions)
-        print(vars(question))
-        if test.questions == f"user_{id}":
+        test = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).first()
+        if test.questions == "":
             test.questions = str(question.id)
         else:
             test.questions += "," + str(question.id)
@@ -202,25 +229,49 @@ def add_question():
 
 @app.route('/test/<int:lesson>', methods=['GET', 'POST'])
 @app.route('/test/<int:lesson>/<int:page>', methods=['GET', 'POST'])
-def test(lesson, page=0):
+def test(lesson, page=1):
     try:
         id = current_user.id
     except AttributeError:
         id = 0
     db_sess = db_session.create_session()
     test = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
-    print(test)
     test = db_sess.query(Test).filter(Test.id == int(test.test)).first()
-    print(test)
+    question = ''
+    print(request.method, page)
+    if request.method == 'POST':
+        m = test.questions.split(",")[page - 1]
+        questions = db_sess.query(Question).filter(Question.id == int(m)).first()
+        session[f"{id}_{page}"] = questions.right == int(request.form['var'])
+        return redirect(f'/test/{lesson}/{page + 1}')
     try:
-        m = test.questions.split(",")[page]
-        test = db_sess.query(Question).filter(Question.id == int(m)).first()
-        varia = [test.variants_f, test.variants_s, test.variants_t, test.variants_fo]
+        if not page:
+            raise IndexError
+        m = test.questions.split(",")[page - 1]
+        questions = db_sess.query(Question).filter(Question.id == int(m)).first()
+        varia = [questions.variants_f, questions.variants_s, questions.variants_t,
+                 questions.variants_fo]
+        question = questions.question
         with open(f"static/img/tests_images/{lesson}_{page}.png", "wb") as file:
-            file.write(test.image)
+            file.write(questions.image)
     except IndexError:
-        return render_template('end_test.html', id=id)
-    return render_template('test.html', varia=varia, id=id, lesson=lesson, page=page)
+        s = [0, 0, 0]
+        for i in test.questions.split(","):
+            print(session.get(f"{str(id)}_{i}", None))
+            if session.get(f"{str(id)}_{i}", None) is None:
+                s[2] += 1
+            elif session.get(f"{str(id)}_{i}", None):
+                s[0] += 1
+            else:
+                s[1] += 1
+            session.pop(f"{str(id)}_{i}", None)
+        print(s[0] / sum(s), s[1] / sum(s), s[2] / sum(s))
+        [remove(f"static/img/tests_images/{i}") for i in listdir("static/img/tests_images") if
+         i.split("_")[0] == str(lesson) and i.split(".")[-1] == 'png']
+        return render_template('end_test.html', id=id, t=round(s[0] / sum(s) * 100, 2),
+                               f=round(s[1] / sum(s) * 100, 2), n=round(s[2] / sum(s) * 100, 2))
+    return render_template('test.html', varia=varia, id=id, lesson=lesson, page=page,
+                           question=question)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -230,16 +281,13 @@ def add():
     except AttributeError:
         id = 0
     db_sess = db_session.create_session()
-    if db_sess.query(Test).filter(Test.author_id == str(id),
-                                  Test.questions == f"user_{id}").first() is not None:
-        return "Нельзя создавать несколько тестов одновременно"
     if not id:
         [remove(f"static/img/top_images/{i}") for i in listdir("static/img/top_images") if
          i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
         [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
          i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
         return render_template('none.html', id=id)
-    print("?", id)
+    ERROR = ""
     form = LessonForm()
     if form.validate_on_submit():
         [remove(f"static/img/top_images/{i}") for i in listdir("static/img/top_images") if
@@ -249,39 +297,42 @@ def add():
         img = []
         for i in form.images.data:
             image = i.read()
-            im = db_sess.query(Image).filter(Image.image == image).all()
-            if len(im):
-                print(im[0])
-                img.append(im[0].id)
+            if image == b'':
+                continue
+            im = db_sess.query(Image).filter(Image.image == image).first()
+            if im is not None:
+                img.append(im.id)
             else:
                 imag = Image(image=image)
                 db_sess.add(imag)
+                db_sess.commit()
+                db_sess = db_session.create_session()
                 d = db_sess.query(Image).filter(Image.image == image).first()
                 img.append(d.id)
         test_id = ""
+        if len(db_sess.query(Test).filter(Test.author_id == id, Test.questions == "",
+                                          Test.created).all()):
+            ERROR = "Нельзя создавать несколько тестов одновременно"
+            return render_template('add.html', form=form, id=id, err=ERROR)
         if form.test.data:
-            print(1)
-            test = Test(author_id=id, questions=f'user_{id}')
-            print(2)
+            test = Test(author_id=id, questions='')
             db_sess.add(test)
-            print(3)
             db_sess.commit()
-            print(4)
             db_sess = db_session.create_session()
             test_id = str(test.id)
-        lesson = Lesson(
-            author_id=id,
-            title=form.title.data,
-            top_image=resize(form.top_image.data.read()),
-            text=form.text.data,
-            images=",".join([str(i) for i in img]), test=test_id)
+        x = form.top_image.data
+        if x is None:
+            x = open("static/img/top_images/0.png", "rb")
+        lesson = Lesson(author_id=id, title=form.title.data, top_image=resize(x.read()),
+                        text=form.text.data, images=",".join([str(i) for i in img]),
+                        test=test_id)
         db_sess.add(lesson)
         db_sess.commit()
         if form.test.data:
             return redirect(f'/add_question')
         else:
             return redirect('/weblearn')
-    return render_template('add.html', form=form, id=id)
+    return render_template('add.html', form=form, id=id, err=ERROR)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -310,9 +361,6 @@ def register():
         db_sess.add(user)
         db_sess.commit()
         login_user(user, remember=True)
-        print(user.id)
-        print(f'/weblearn/{user.id}')
-        session.get('form.email.data', True)
         return redirect('/weblearn')
     return render_template('register.html', title='Регистрация', form=form)
 
@@ -328,7 +376,7 @@ def main():
         port = int(environ.get("PORT", 5000))
         app.run(host='0.0.0.0', port=port)
     else:
-        app.run(port=8080, host='127.0.0.1', debug=True)
+        app.run(port=8080, host='127.0.0.1', debug=False)
     rmdir("static/img/top_images")
 
 
