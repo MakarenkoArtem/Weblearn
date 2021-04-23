@@ -9,6 +9,7 @@ from data.questions import Question
 from data.tests import Test
 from data.images import Image
 from forms.question import QuestionForm
+from api import lesson_resource
 from data import db_session
 from data.lessons import Lesson
 from os import listdir, remove, rmdir, mkdir, environ, path
@@ -365,9 +366,11 @@ def register():
     return render_template('register.html', title='Регистрация', form=form)
 
 
+api.add_resource(lesson_resource.LessonResource, '/api/v1/lesson/<int:lesson_id>')
+
+
 def main():
     db_session.global_init()
-    # app.register_blueprint(news)
     try:
         mkdir("static/img/top_images")
     except FileExistsError:

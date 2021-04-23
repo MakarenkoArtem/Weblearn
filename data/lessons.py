@@ -5,7 +5,7 @@ from flask_login import UserMixin
 from sqlalchemy_serializer import SerializerMixin
 
 
-class Lesson(SqlAlchemyBase):
+class Lesson(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'lessons'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
