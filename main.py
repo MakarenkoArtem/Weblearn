@@ -155,10 +155,13 @@ def weblearn(page=1):
     if len(pages) == 1:
         pages = []
     try:
+        db_sess = db_session.create_session()
         name = db_sess.query(User).filter(User.id == id).one()
         name = name.nickname
     except sqlalchemy.orm.exc.NoResultFound:
         name = ''
+    finally:
+        db_sess.commit()
     return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts,
                            pages=pages, name=name)
 
@@ -184,10 +187,13 @@ def lesson(lesson):
             open(f'static/img/all_images/{i}.png', 'wb').write(img.image)
         images = [i + ".png" for i in lesson.images.split(",")]
     try:
+        db_sess = db_session.create_session()
         name = db_sess.query(User).filter(User.id == id).one()
         name = name.nickname
     except sqlalchemy.orm.exc.NoResultFound:
         name = ''
+    finally:
+        db_sess.commit()
     return render_template("lesson.html", id=id, lesson=lesson, images=images, test=lesson.test, name=name)
 
 
@@ -250,10 +256,13 @@ def add_question():
         db_sess.add(test)
         db_sess.commit()
     try:
+        db_sess = db_session.create_session()
         name = db_sess.query(User).filter(User.id == id).one()
         name = name.nickname
     except sqlalchemy.orm.exc.NoResultFound:
         name = ''
+    finally:
+        db_sess.commit()
     return render_template('add_question.html', form=form, id=id, name=name)
 
 
@@ -288,10 +297,13 @@ def test(lesson, page=1):
     question = ''
     print(request.method, page)
     try:
+        db_sess = db_session.create_session()
         name = db_sess.query(User).filter(User.id == id).one()
         name = name.nickname
     except sqlalchemy.orm.exc.NoResultFound:
         name = ''
+    finally:
+        db_sess.commit()
     try:
         if request.method == 'POST':
             m = test.questions.split(",")[page - 1]
@@ -401,10 +413,13 @@ def add():
         else:
             return redirect('/weblearn')
     try:
+        db_sess = db_session.create_session()
         name = db_sess.query(User).filter(User.id == id).one()
         name = name.nickname
     except sqlalchemy.orm.exc.NoResultFound:
         name = ''
+    finally:
+        db_sess.commit()
     return render_template('add.html', form=form, id=id, err=ERROR, name=name)
 
 
