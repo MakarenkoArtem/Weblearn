@@ -26,6 +26,7 @@ app.config['SECRET_KEY'] = 'my_secret_key'
 
 
 def resize(pic, width=700, height=450):
+    return pic
     with open("static/img/!!!!!!!!0.png", "wb") as file:
         file.write(pic)
     im = Imagepil.open("static/img/!!!!!!!!0.png")
