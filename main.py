@@ -348,8 +348,10 @@ def add():
             db_sess.add(test)
             db_sess.commit()
             db_sess = db_session.create_session()
-            db_sess.query(Test).filter(Test.created == 1, Test.author_id == id).first()
-            test_id = str(test.id)
+            for i in db_sess.query(Test).filter().all():
+                if i.created == 1 and i.author_id == id:
+                    test_id = str(test.id)
+                    break
         print("Создан тест номер:", test_id)
         x = form.top_image.data
         if x is None:
