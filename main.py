@@ -175,7 +175,7 @@ def lesson(lesson):
             img = db_sess.query(Image).filter(Image.id == i).first()
             open(f'static/img/all_images/{i}.png', 'wb').write(img.image)
         images = [i + ".png" for i in lesson.images.split(",")]
-    
+
     return render_template("lesson.html", id=id, lesson=lesson, images=images, test=lesson.test)
 
 
@@ -192,7 +192,7 @@ def entry():
         us = None
         for user in db_sess.query(User).all():
             if user.email == form.email.data and check_password_hash(user.hashed_password,
-                                                                           form.password.data):
+                                                                     form.password.data):
                 us = user
                 break
         if us is None:
@@ -250,11 +250,12 @@ def test(lesson, page=1):
     print("TEST_LESSON", lesson)
     test = None
     for i in db_sess.query(Lesson).all():
-        if i.id==lesson:
+        if i.id == lesson:
             test = i
             break
     if test is None:
         return redirect(f'/lesson/{lesson}')
+    test = db_sess.query(Test).filter(Test.id == int(test.test)).first()
     print("TEST", test)
     question = ''
     print(request.method, page)
