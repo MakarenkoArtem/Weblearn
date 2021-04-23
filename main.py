@@ -349,6 +349,7 @@ def add():
             db_sess.add(test)
             db_sess.commit()
             db_sess = db_session.create_session()
+        print("Создан тест номер:", test_id)
         x = form.top_image.data
         if x is None:
             x = open("static/img/top_images/0.png", "rb")
