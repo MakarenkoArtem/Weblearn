@@ -452,7 +452,6 @@ def register():
 
 
 api.add_resource(lesson_resource.LessonResource, '/api/v1/lesson/<int:lesson_id>')
-api.add_resource(lesson_resource.LessonResource, '/api/v1/lesson/title=<str:title')
 
 
 def main():
