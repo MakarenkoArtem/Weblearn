@@ -226,6 +226,7 @@ def add_question():
         db_sess.commit()
         db_sess = db_session.create_session()
         test = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).first()
+        print("TEST", test.id)
         if test.questions == "":
             test.questions = q
         else:
@@ -245,7 +246,7 @@ def test(lesson, page=1):
     db_sess = db_session.create_session()
     print(lesson)
     test = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
-    print(test.id)
+    print(test.test)
     test = db_sess.query(Test).filter(Test.id == int(test.test)).first()
     question = ''
     print(request.method, page)
