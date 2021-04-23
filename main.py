@@ -15,9 +15,10 @@ from data.lessons import Lesson
 from os import listdir, remove, rmdir, mkdir, environ, path
 from PIL import Image as Imagepil
 import sqlalchemy
+import datetime
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=1)
 api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
