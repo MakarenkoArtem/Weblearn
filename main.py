@@ -26,13 +26,12 @@ app.config['SECRET_KEY'] = 'my_secret_key'
 
 
 def resize(pic, width=700, height=450):
-    return pic
     with open("static/img/!!!!!!!!0.png", "wb") as file:
         file.write(pic)
     im = Imagepil.open("static/img/!!!!!!!!0.png")
     im = im.resize((width, height))
     im.save("static/img/!!!!!!!!0.png")
-    im = open("static/img/!!!!!!!!0.png", "rb").read()
+    im = open("static/img/!!!!!!!!0.png", "rb")
     remove("static/img/!!!!!!!!0.png")
     return im
 
@@ -291,17 +290,17 @@ def add():
     db_sess = db_session.create_session()
     if not id:
         [remove(f"static/img/top_images/{i}") for i in listdir("static/img/top_images") if
-         i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
+         i.split("_")[0] == str(id) and i != "0.png" and i.split(".")[-1] == 'png']
         [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
-         i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
+         i.split("_")[0] == str(id) and i != "0.png" and i.split(".")[-1] == 'png']
         return render_template('none.html', id=id)
     ERROR = ""
     form = LessonForm()
     if form.validate_on_submit():
         [remove(f"static/img/top_images/{i}") for i in listdir("static/img/top_images") if
-         i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
+         i.split("_")[0] == str(id) and i != "0.png" and i.split(".")[-1] == 'png']
         [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
-         i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
+         i.split("_")[0] == str(id) and i != "0.png" and i.split(".")[-1] == 'png']
         img = []
         if len(db_sess.query(Test).filter(Test.author_id == id, Test.questions == "",
                                           Test.created == 1).all()):
@@ -332,7 +331,6 @@ def add():
         print("x", x, x is None)
         if x is None:
             x = open("static/img/top_images/0.png", "rb")
-        print(x.read())
         lesson = Lesson(author_id=id, title=form.title.data, top_image=resize(x.read()),
                         text=form.text.data, images=",".join([str(i) for i in img]),
                         test=test_id)
