@@ -94,7 +94,8 @@ def del_lesson(lesson):
 
 @app.route('/weblearn')
 @app.route('/weblearn/page=<int:page>')
-def weblearn(page=1):
+@app.route('/weblearn/page=<int:page>/<int:lesson_del>')
+def weblearn(page=1, lesson_del=0):
     try:
         id = current_user.id
     except AttributeError:
@@ -163,7 +164,7 @@ def weblearn(page=1):
     finally:
         db_sess.commit()
     return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts,
-                           pages=pages, name=name)
+                           pages=pages, name=name, page=page, lesson_del=lesson_del)
 
 
 @app.route('/lesson/<int:lesson>')
@@ -194,7 +195,8 @@ def lesson(lesson):
         name = ''
     finally:
         db_sess.commit()
-    return render_template("lesson.html", id=id, lesson=lesson, images=images, test=lesson.test, name=name)
+    return render_template("lesson.html", id=id, lesson=lesson, images=images, test=lesson.test,
+                           name=name)
 
 
 @app.route('/')
