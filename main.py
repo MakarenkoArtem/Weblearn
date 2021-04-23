@@ -26,12 +26,13 @@ app.config['SECRET_KEY'] = 'my_secret_key'
 
 
 def resize(pic, width=700, height=450):
+    return pic
     with open("static/img/!!!!!!!!0.png", "wb") as file:
         file.write(pic)
     im = Imagepil.open("static/img/!!!!!!!!0.png")
     im = im.resize((width, height))
     im.save("static/img/!!!!!!!!0.png")
-    im = open("static/img/!!!!!!!!0.png", "rb")
+    im = open("static/img/!!!!!!!!0.png", "rb").read()
     remove("static/img/!!!!!!!!0.png")
     return im
 
@@ -328,10 +329,7 @@ def add():
             db_sess.commit()
             db_sess = db_session.create_session()
         x = form.top_image.data
-        print("x", x, x is None)
-        print("x", x, x is None)
         if x is None:
-            print("*"*50)
             x = open("static/img/top_images/0.png", "rb")
         lesson = Lesson(author_id=id, title=form.title.data, top_image=resize(x.read()),
                         text=form.text.data, images=",".join([str(i) for i in img]),
