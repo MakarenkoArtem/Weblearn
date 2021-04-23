@@ -268,12 +268,14 @@ def test(lesson, page=1):
     print("TEST", test)
     question = ''
     print(request.method, page)
-    if request.method == 'POST':
-        m = test.questions.split(",")[page - 1]
-        questions = db_sess.query(Question).filter(Question.id == int(m)).first()
-        session[f"{id}_{page}"] = questions.right == int(request.form['var'])
-        return redirect(f'/test/{lesson}/{page + 1}')
     try:
+        if request.method == 'POST':
+            m = test.questions.split(",")[page - 1]
+            for i in db_sess.query(Question).all():
+                if i.id == int(m):
+                    session[f"{id}_{page}"] = i.right == int(request.form['var'])
+                    break
+            return redirect(f'/test/{lesson}/{page + 1}')
         if not page:
             raise IndexError
         m = test.questions.split(",")[page - 1]
