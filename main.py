@@ -224,17 +224,17 @@ def add_question():
             variants_s=form.variants_s.data,
             variants_t=form.variants_t.data, right=int(request.form['var']),
             variants_fo=form.variants_fo.data, image=resize(x))
-        q = str(question.id)
-        print("NEW_QUESTION", q)
         db_sess.add(question)
         db_sess.commit()
         db_sess = db_session.create_session()
         test = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).first()
+        q = db_sess.query(Question).all()[-1]
+        print("NEW_QUESTION", q.id)
         print("TEST", test.id)
         if test.questions == "":
-            test.questions = q
+            test.questions = str(q.id)
         else:
-            test.questions += "," + q
+            test.questions += "," + str(q.id)
         db_sess.add(test)
         db_sess.commit()
     return render_template('add_question.html', form=form, id=id)
