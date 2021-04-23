@@ -290,7 +290,7 @@ def test(lesson, page=1):
         s = [0, 0, 0]
         print("Результаты:")
         print(test.questions)
-        for i in test.questions.split(","):
+        for i in range(1, 1 + len(test.questions.split(","))):
             print(session.get(f"{str(id)}_{i}", None))
             if session.get(f"{str(id)}_{i}", None) is None:
                 s[2] += 1
