@@ -270,11 +270,12 @@ def test(lesson, page=1):
     try:
         if request.method == 'POST':
             m = test.questions.split(",")[page - 1]
+            print("Вопросы:", m)
             for i in db_sess.query(Question).all():
                 if i.id == int(m):
                     session[f"{id}_{page}"] = i.right == int(request.form['var'])
                     break
-            print(page + ":", session.get(f"{id}_{page}", None))
+            print(str(page) + ":", session.get(f"{id}_{page}", None))
             return redirect(f'/test/{lesson}/{page + 1}')
         if not page:
             raise IndexError
