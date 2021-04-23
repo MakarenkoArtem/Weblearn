@@ -302,12 +302,10 @@ def add():
         [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
          i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
         img = []
-        print(1)
         if len(db_sess.query(Test).filter(Test.author_id == id, Test.questions == "",
                                           Test.created == 1).all()):
             ERROR = "Нельзя создавать несколько тестов одновременно"
             return render_template('add.html', form=form, id=id, err=ERROR)
-        print(2)
         for i in form.images.data:
             image = i.read()
             if image == b'':
@@ -322,23 +320,15 @@ def add():
                 db_sess = db_session.create_session()
                 d = db_sess.query(Image).filter(Image.image == image).first()
                 img.append(d.id)
-        print(3)
         test_id = ""
         if form.test.data:
-            print(3.1)
             test = Test(author_id=id, questions='')
-            print(3.2)
             test_id = str(test.id)
             db_sess.add(test)
-            print(3.3)
             db_sess.commit()
-            print(3.4)
             db_sess = db_session.create_session()
-            print(3.5)
-            print(3.6)
-        print(4)
         x = form.top_image.data
-        print("x", x)
+        print("x", x, x is None)
         if x is None:
             x = open("static/img/top_images/0.png", "rb")
         print(5)
