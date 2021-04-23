@@ -17,6 +17,7 @@ from PIL import Image as Imagepil
 import sqlalchemy
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
