@@ -255,9 +255,8 @@ def test(lesson, page=1):
             break
     if test is None:
         return redirect(f'/lesson/{lesson}')
-    print(test, test == "None", test is None)
     for i in db_sess.query(Test).all():
-        print(i.id, test, i.questions)
+        print("Все тесты:", i.id, test, i.id == test, i.questions)
         if i.id == test:
             print("TRUE")
             test = i
