@@ -16,6 +16,7 @@ def abort_if_lessons_not_found(lesson_id):
 
 class LessonResource(Resource):
     def get(self, lesson_id):
+        print("API", lesson_id)
         lesson = abort_if_lessons_not_found(lesson_id)
         lesson.top_image = str(lesson.top_image)
         return jsonify({'lesson': lesson.to_dict(only=list(vars(lesson).keys())[1:])})
