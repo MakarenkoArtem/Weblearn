@@ -255,7 +255,6 @@ def test(lesson, page=1):
             break
     if test is None:
         return redirect(f'/lesson/{lesson}')
-    test = db_sess.query(Test).filter(Test.id == int(test.test)).first()
     print("TEST", test)
     question = ''
     print(request.method, page)
