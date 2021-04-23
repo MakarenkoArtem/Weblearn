@@ -248,11 +248,15 @@ def test(lesson, page=1):
         id = 0
     db_sess = db_session.create_session()
     print("TEST_LESSON", lesson)
+    test = None
     for i in db_sess.query(Lesson).all():
-        print(i.id, lesson, i.id==lesson, i.title)
-    test = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
-    print(test.test)
+        if i.id==lesson:
+            test = i
+            break
+    if test is None:
+        return redirect(f'/lesson/{lesson}')
     test = db_sess.query(Test).filter(Test.id == int(test.test)).first()
+    print("TEST", test)
     question = ''
     print(request.method, page)
     if request.method == 'POST':
