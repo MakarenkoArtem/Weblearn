@@ -255,12 +255,12 @@ def test(lesson, page=1):
             break
     if test is None:
         return redirect(f'/lesson/{lesson}')
-    for i in db_sess.query(Test).all():
+    '''for i in db_sess.query(Test).all():
         print("Все тесты:", i.id, test, str(i.id) == str(test), i.questions)
         if str(i.id) == str(test):
             print("TRUE")
             test = int(i.id)
-            break
+            break'''
     if test is None:
         return redirect(f'/lesson/{lesson}')
     test = db_sess.query(Test).filter(Test.id == test).first()
@@ -274,6 +274,7 @@ def test(lesson, page=1):
                 if i.id == int(m):
                     session[f"{id}_{page}"] = i.right == int(request.form['var'])
                     break
+            print(page + ":", session.get(f"{id}_{page}", None))
             return redirect(f'/test/{lesson}/{page + 1}')
         if not page:
             raise IndexError
