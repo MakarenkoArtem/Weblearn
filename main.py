@@ -175,7 +175,7 @@ def lesson(lesson):
             img = db_sess.query(Image).filter(Image.id == i).first()
             open(f'static/img/all_images/{i}.png', 'wb').write(img.image)
         images = [i + ".png" for i in lesson.images.split(",")]
-    db_sess.close()
+    
     return render_template("lesson.html", id=id, lesson=lesson, images=images, test=lesson.test)
 
 
