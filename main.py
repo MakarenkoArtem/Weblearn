@@ -249,6 +249,8 @@ def test(lesson, page=1):
         id = 0
     db_sess = db_session.create_session()
     test = None
+    test = db_sess.query(Lesson).filter(Lesson.id == lesson).one()
+    print("Проверка", test)
     for i in db_sess.query(Lesson).all():
         if i.id == lesson:
             test = i.test
