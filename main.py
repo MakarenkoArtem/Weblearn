@@ -121,7 +121,9 @@ def weblearn(page=1):
         im = db_sess.query(User).filter(User.id == id).first()
         with open(f"static/img/user_images/{id}.png", "wb") as file:
             file.write(im.image)
-    lessons = db_sess.query(Lesson).all()[(page - 1) * 12:page * 12]
+    lessons = db_sess.query(Lesson).all()
+    lessons.reverse()
+    lessons = lessons[(page - 1) * 12:page * 12]
     texts = []
     [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
      i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
@@ -296,10 +298,12 @@ def add():
         [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
          i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
         img = []
+        print(1)
         if len(db_sess.query(Test).filter(Test.author_id == id, Test.questions == "",
                                           Test.created == 1).all()):
             ERROR = "Нельзя создавать несколько тестов одновременно"
             return render_template('add.html', form=form, id=id, err=ERROR)
+        print(2)
         for i in form.images.data:
             image = i.read()
             if image == b'':
@@ -314,6 +318,7 @@ def add():
                 db_sess = db_session.create_session()
                 d = db_sess.query(Image).filter(Image.image == image).first()
                 img.append(d.id)
+        print(3)
         test_id = ""
         if form.test.data:
             test = Test(author_id=id, questions='')
@@ -321,14 +326,19 @@ def add():
             db_sess.commit()
             db_sess = db_session.create_session()
             test_id = str(test.id)
+        print(4)
         x = form.top_image.data
         if x is None:
             x = open("static/img/top_images/0.png", "rb")
+        print(5)
         lesson = Lesson(author_id=id, title=form.title.data, top_image=resize(x.read()),
                         text=form.text.data, images=",".join([str(i) for i in img]),
                         test=test_id)
+        print(6)
         db_sess.add(lesson)
+        print(7)
         db_sess.commit()
+        print(8)
         if test_id != "":
             return redirect(f'/add_question')
         else:
