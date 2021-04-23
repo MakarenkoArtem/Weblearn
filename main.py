@@ -225,6 +225,7 @@ def add_question():
             variants_t=form.variants_t.data, right=int(request.form['var']),
             variants_fo=form.variants_fo.data, image=resize(x))
         q = str(question.id)
+        print("NEW_QUESTION", q)
         db_sess.add(question)
         db_sess.commit()
         db_sess = db_session.create_session()
@@ -247,7 +248,6 @@ def test(lesson, page=1):
     except AttributeError:
         id = 0
     db_sess = db_session.create_session()
-    print("TEST_LESSON", lesson)
     test = None
     for i in db_sess.query(Lesson).all():
         if i.id == lesson:
