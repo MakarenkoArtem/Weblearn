@@ -155,8 +155,13 @@ def weblearn(page=1):
         pages.insert(-2, "...")
     if len(pages) == 1:
         pages = []
+    try:
+        name = db_sess.query(User).filter(User.id == id).one()
+        name = name.nickname
+    except sqlalchemy.orm.exc.NoResultFound:
+        name = ''
     return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts,
-                           pages=pages)
+                           pages=pages, name=name)
 
 
 @app.route('/lesson/<int:lesson>')
@@ -179,8 +184,12 @@ def lesson(lesson):
             img = db_sess.query(Image).filter(Image.id == i).first()
             open(f'static/img/all_images/{i}.png', 'wb').write(img.image)
         images = [i + ".png" for i in lesson.images.split(",")]
-
-    return render_template("lesson.html", id=id, lesson=lesson, images=images, test=lesson.test)
+    try:
+        name = db_sess.query(User).filter(User.id == id).one()
+        name = name.nickname
+    except sqlalchemy.orm.exc.NoResultFound:
+        name = ''
+    return render_template("lesson.html", id=id, lesson=lesson, images=images, test=lesson.test, name=name)
 
 
 @app.route('/')
@@ -241,7 +250,12 @@ def add_question():
             test.questions += "," + str(q.id)
         db_sess.add(test)
         db_sess.commit()
-    return render_template('add_question.html', form=form, id=id)
+    try:
+        name = db_sess.query(User).filter(User.id == id).one()
+        name = name.nickname
+    except sqlalchemy.orm.exc.NoResultFound:
+        name = ''
+    return render_template('add_question.html', form=form, id=id, name=name)
 
 
 @app.route('/test/<int:lesson>', methods=['GET', 'POST'])
@@ -274,6 +288,11 @@ def test(lesson, page=1):
     print("TEST", test)
     question = ''
     print(request.method, page)
+    try:
+        name = db_sess.query(User).filter(User.id == id).one()
+        name = name.nickname
+    except sqlalchemy.orm.exc.NoResultFound:
+        name = ''
     try:
         if request.method == 'POST':
             m = test.questions.split(",")[page - 1]
@@ -311,10 +330,10 @@ def test(lesson, page=1):
         print(s[0] / sum(s), s[1] / sum(s), s[2] / sum(s))
         [remove(f"static/img/tests_images/{i}") for i in listdir("static/img/tests_images") if
          i.split("_")[0] == str(lesson) and i.split(".")[-1] == 'png']
-        return render_template('end_test.html', id=id, t=round(s[0] / sum(s) * 100, 2),
+        return render_template('end_test.html', id=id, t=round(s[0] / sum(s) * 100, 2), name=name,
                                f=round(s[1] / sum(s) * 100, 2), n=round(s[2] / sum(s) * 100, 2))
     return render_template('test.html', varia=varia, id=id, lesson=lesson, page=page,
-                           question=question)
+                           question=question, name=name)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -380,7 +399,12 @@ def add():
             return redirect(f'/add_question')
         else:
             return redirect('/weblearn')
-    return render_template('add.html', form=form, id=id, err=ERROR)
+    try:
+        name = db_sess.query(User).filter(User.id == id).one()
+        name = name.nickname
+    except sqlalchemy.orm.exc.NoResultFound:
+        name = ''
+    return render_template('add.html', form=form, id=id, err=ERROR, name=name)
 
 
 @app.route('/register', methods=['GET', 'POST'])
