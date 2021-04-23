@@ -182,7 +182,7 @@ def entry():
         db_sess = db_session.create_session()
         us = None
         for user in db_sess.query(User).all():
-            if user.nickname == form.nickname.data and check_password_hash(user.hashed_password,
+            if user.email == form.email.data and check_password_hash(user.hashed_password,
                                                                            form.password.data):
                 us = user
                 break

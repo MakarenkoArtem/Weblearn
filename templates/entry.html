@@ -8,11 +8,12 @@
             <form action="" method="post">
                 {{ form.hidden_tag() }}
                 <p>
-                    {{ form.nickname.label }}<br>
-                    {{ form.nickname(class="form-control") }}<br>
-                    {% for error in form.nickname.errors %}
+                    {{ form.email.label }}<br>
+                    {{ form.email(class="form-control", type="email") }}<br>
+                    {% for error in form.email.errors %}
                 <p class="alert alert-danger" role="alert">
                     {{ error }}
+                {% endfor %}
                 </p>
                 </p>
                 {% endfor %}
