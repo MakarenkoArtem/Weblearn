@@ -243,7 +243,9 @@ def test(lesson, page=1):
     except AttributeError:
         id = 0
     db_sess = db_session.create_session()
+    print(lesson)
     test = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
+    print(test.id)
     test = db_sess.query(Test).filter(Test.id == int(test.test)).first()
     question = ''
     print(request.method, page)
