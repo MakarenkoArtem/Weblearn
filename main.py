@@ -164,7 +164,9 @@ def lesson(lesson):
     [remove(f"static/img/top_images/{i}") for i in listdir("static/img/top_images") if
      i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
     db_sess = db_session.create_session()
+    print("LESSON", lesson)
     lesson = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
+    print(lesson.id)
     with open(f'static/img/top_images/{id}_{lesson.id}.png', 'wb') as file:
         file.write(lesson.top_image)
     images = []
