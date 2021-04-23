@@ -288,6 +288,8 @@ def test(lesson, page=1):
             file.write(questions.image)
     except IndexError:
         s = [0, 0, 0]
+        print("Результаты:")
+        print(test.questions)
         for i in test.questions.split(","):
             print(session.get(f"{str(id)}_{i}", None))
             if session.get(f"{str(id)}_{i}", None) is None:
