@@ -329,7 +329,9 @@ def add():
             db_sess = db_session.create_session()
         x = form.top_image.data
         print("x", x, x is None)
+        print("x", x, x is None)
         if x is None:
+            print("*"*50)
             x = open("static/img/top_images/0.png", "rb")
         lesson = Lesson(author_id=id, title=form.title.data, top_image=resize(x.read()),
                         text=form.text.data, images=",".join([str(i) for i in img]),
