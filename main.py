@@ -466,6 +466,7 @@ def main():
         pass
     if 'HEROKU' in environ:
         port = int(environ.get("PORT", 5000))
+        print(port)
         app.run(host='0.0.0.0', port=port)
     else:
         app.run(port=8080, host='127.0.0.1', debug=False)
