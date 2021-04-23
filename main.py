@@ -220,14 +220,15 @@ def add_question():
             variants_s=form.variants_s.data,
             variants_t=form.variants_t.data, right=int(request.form['var']),
             variants_fo=form.variants_fo.data, image=resize(x))
+        q = str(question.id)
         db_sess.add(question)
         db_sess.commit()
         db_sess = db_session.create_session()
         test = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).first()
         if test.questions == "":
-            test.questions = str(question.id)
+            test.questions = q
         else:
-            test.questions += "," + str(question.id)
+            test.questions += "," + q
         db_sess.add(test)
         db_sess.commit()
     return render_template('add_question.html', form=form, id=id)
