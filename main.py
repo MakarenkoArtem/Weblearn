@@ -164,7 +164,8 @@ def lesson(lesson):
      i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
     db_sess = db_session.create_session()
     lesson = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
-    open(f'static/img/top_images/{id}_{lesson.id}.png', 'wb').write(lesson.top_image)
+    with open(f'static/img/top_images/{id}_{lesson.id}.png', 'wb') as file:
+        file.write(lesson.top_image)
     images = []
     if lesson.images:
         for i in lesson.images.split(","):
@@ -323,11 +324,17 @@ def add():
         print(3)
         test_id = ""
         if form.test.data:
+            print(3.1)
             test = Test(author_id=id, questions='')
+            print(3.2)
             db_sess.add(test)
+            print(3.3)
             db_sess.commit()
+            print(3.4)
             db_sess = db_session.create_session()
+            print(3.5)
             test_id = str(test.id)
+            print(3.6)
         print(4)
         x = form.top_image.data
         if x is None:
