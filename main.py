@@ -296,6 +296,10 @@ def add():
         [remove(f"static/img/all_images/{i}") for i in listdir("static/img/all_images") if
          i.split("_")[0] == str(id) and i.split(".")[-1] == 'png']
         img = []
+        if len(db_sess.query(Test).filter(Test.author_id == id, Test.questions == "",
+                                          Test.created == 1).all()):
+            ERROR = "Нельзя создавать несколько тестов одновременно"
+            return render_template('add.html', form=form, id=id, err=ERROR)
         for i in form.images.data:
             image = i.read()
             if image == b'':
@@ -311,10 +315,6 @@ def add():
                 d = db_sess.query(Image).filter(Image.image == image).first()
                 img.append(d.id)
         test_id = ""
-        if len(db_sess.query(Test).filter(Test.author_id == id, Test.questions == "",
-                                          Test.created == 1).all()):
-            ERROR = "Нельзя создавать несколько тестов одновременно"
-            return render_template('add.html', form=form, id=id, err=ERROR)
         if form.test.data:
             test = Test(author_id=id, questions='')
             db_sess.add(test)
@@ -329,7 +329,7 @@ def add():
                         test=test_id)
         db_sess.add(lesson)
         db_sess.commit()
-        if form.test.data:
+        if test_id != "":
             return redirect(f'/add_question')
         else:
             return redirect('/weblearn')
