@@ -251,13 +251,17 @@ def test(lesson, page=1):
     test = None
     for i in db_sess.query(Lesson).all():
         if i.id == lesson:
-            test = i
+            test = i.test
             break
     if test is None:
         return redirect(f'/lesson/{lesson}')
     print(test)
-    print(test.test)
-    test = db_sess.query(Test).filter(Test.id == int(test.test)).first()
+    for i in db_sess.query(Test).all():
+        print(i.id, test, i.questions)
+        if i.id == int(test):
+            test = i
+            break
+    test = db_sess.query(Test).filter(Test.id == test).first()
     print("TEST", test)
     question = ''
     print(request.method, page)
