@@ -101,11 +101,15 @@ def weblearn(page=1):
     except AttributeError:
         id = 0
     db_sess = db_session.create_session()
-    d = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).one()
-    if d is not None:
-        d.created = 0
-        db_sess.commit()
-        db_sess = db_session.create_session()
+    try:
+        d = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).one()
+        print(d)
+        if d is not None:
+            d.created = 0
+            db_sess.commit()
+            db_sess = db_session.create_session()
+    except sqlalchemy.orm.exc.NoResultFound:
+        pass
     for x in db_sess.query(Test).filter(Test.author_id == id, Test.questions == "",
                                         Test.created == 0).all():
         try:
@@ -249,13 +253,14 @@ def test(lesson, page=1):
         id = 0
     db_sess = db_session.create_session()
     test = None
-    test = db_sess.query(Lesson).filter(Lesson.id == lesson).one()
-    print("Проверка", test)
-    '''for i in db_sess.query(Lesson).all():
-        if i.id == lesson:
-            test = i.test
-            break'''
-    if test is None:
+    try:
+        test = db_sess.query(Lesson).filter(Lesson.id == lesson).one()
+        print("Проверка", test)
+        '''for i in db_sess.query(Lesson).all():
+            if i.id == lesson:
+                test = i.test
+                break'''
+    except sqlalchemy.orm.exc.NoResultFound:
         return redirect(f'/lesson/{lesson}')
     '''for i in db_sess.query(Test).all():
         print("Все тесты:", i.id, test, str(i.id) == str(test), i.questions)
@@ -265,7 +270,7 @@ def test(lesson, page=1):
             break'''
     if test is None:
         return redirect(f'/lesson/{lesson}')
-    test = db_sess.query(Test).filter(Test.id == test).one()
+    test = db_sess.query(Test).filter(Test.id == test.test).one()
     print("TEST", test)
     question = ''
     print(request.method, page)
