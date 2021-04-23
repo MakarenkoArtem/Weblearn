@@ -312,7 +312,7 @@ def add():
                 img.append(d.id)
         test_id = ""
         if len(db_sess.query(Test).filter(Test.author_id == id, Test.questions == "",
-                                          Test.created).all()):
+                                          Test.created == 1).all()):
             ERROR = "Нельзя создавать несколько тестов одновременно"
             return render_template('add.html', form=form, id=id, err=ERROR)
         if form.test.data:
