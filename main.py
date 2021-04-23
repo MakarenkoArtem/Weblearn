@@ -327,16 +327,17 @@ def add():
             print(3.1)
             test = Test(author_id=id, questions='')
             print(3.2)
+            test_id = str(test.id)
             db_sess.add(test)
             print(3.3)
             db_sess.commit()
             print(3.4)
             db_sess = db_session.create_session()
             print(3.5)
-            test_id = str(test.id)
             print(3.6)
         print(4)
         x = form.top_image.data
+        print("x", x)
         if x is None:
             x = open("static/img/top_images/0.png", "rb")
         print(5)
