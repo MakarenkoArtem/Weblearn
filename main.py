@@ -366,6 +366,9 @@ def add():
             test_id = str(i.id)
         print("Создан тест номер:", test_id)
         x = form.top_image.data
+        print(x)
+        print(x)
+        print(x)
         if x is None:
             x = open("static/img/top_images/0.png", "rb")
         lesson = Lesson(author_id=id, title=form.title.data, top_image=resize(x.read()),
