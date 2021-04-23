@@ -255,7 +255,7 @@ def test(lesson, page=1):
             break
     if test is None:
         return redirect(f'/lesson/{lesson}')
-    print(test, test=="None", test is None)
+    print(test, test == "None", test is None)
     for i in db_sess.query(Test).all():
         print(i.id, test, i.questions)
         if i.id == test:
@@ -345,10 +345,11 @@ def add():
         test_id = ""
         if form.test.data:
             test = Test(author_id=id, questions='')
-            test_id = str(test.id)
             db_sess.add(test)
             db_sess.commit()
             db_sess = db_session.create_session()
+            db_sess.query(Test).filter(Test.created == 1, Test.author_id == id).first()
+            test_id = str(test.id)
         print("Создан тест номер:", test_id)
         x = form.top_image.data
         if x is None:
