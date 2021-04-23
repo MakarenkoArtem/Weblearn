@@ -350,7 +350,7 @@ def add():
             db_sess = db_session.create_session()
             for i in db_sess.query(Test).filter().all():
                 if i.created == 1 and i.author_id == id:
-                    test_id = str(test.id)
+                    test_id = str(i.id)
                     break
         print("Создан тест номер:", test_id)
         x = form.top_image.data
