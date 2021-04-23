@@ -249,7 +249,7 @@ def test(lesson, page=1):
     db_sess = db_session.create_session()
     print("TEST_LESSON", lesson)
     for i in db_sess.query(Lesson).all():
-        print(i.id, i.title)
+        print(i.id, lesson, i.id==lesson, i.title)
     test = db_sess.query(Lesson).filter(Lesson.id == int(lesson)).first()
     print(test.test)
     test = db_sess.query(Test).filter(Test.id == int(test.test)).first()
