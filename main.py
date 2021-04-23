@@ -331,15 +331,12 @@ def add():
         print("x", x, x is None)
         if x is None:
             x = open("static/img/top_images/0.png", "rb")
-        print(5)
+        print(x.read())
         lesson = Lesson(author_id=id, title=form.title.data, top_image=resize(x.read()),
                         text=form.text.data, images=",".join([str(i) for i in img]),
                         test=test_id)
-        print(6)
         db_sess.add(lesson)
-        print(7)
         db_sess.commit()
-        print(8)
         if test_id != "":
             return redirect(f'/add_question')
         else:
