@@ -68,7 +68,7 @@ def del_lesson(lesson):
     except AttributeError:
         id = 0
     db_sess = db_session.create_session()
-    d = db_sess.query(Lesson).filter(Lesson.author_id == id, Lesson.id == lesson).first()
+    d = db_sess.query(Lesson).filter(Lesson.author_id == id, Lesson.id == lesson).one()
     if d is None:
         return redirect('/weblearn')
     t = d.test
@@ -79,13 +79,13 @@ def del_lesson(lesson):
     except ValueError:
         return redirect('/weblearn')
     db_sess = db_session.create_session()
-    d = db_sess.query(Test).filter(Test.id == t).first()
+    d = db_sess.query(Test).filter(Test.id == t).one()
     if d is None:
         return redirect('/weblearn')
     s = d.questions.split(",")
     for i in s:
         db_sess = db_session.create_session()
-        d = db_sess.query(Question).filter(Question.id == int(i)).first()
+        d = db_sess.query(Question).filter(Question.id == int(i)).one()
         if d is None:
             continue
         db_sess.delete(d)
@@ -101,7 +101,7 @@ def weblearn(page=1):
     except AttributeError:
         id = 0
     db_sess = db_session.create_session()
-    d = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).first()
+    d = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).one()
     if d is not None:
         d.created = 0
         db_sess.commit()
@@ -227,7 +227,7 @@ def add_question():
         db_sess.add(question)
         db_sess.commit()
         db_sess = db_session.create_session()
-        test = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).first()
+        test = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).one()
         q = db_sess.query(Question).all()[-1]
         print("NEW_QUESTION", q.id)
         print("TEST", test.id)
@@ -251,10 +251,10 @@ def test(lesson, page=1):
     test = None
     test = db_sess.query(Lesson).filter(Lesson.id == lesson).one()
     print("Проверка", test)
-    for i in db_sess.query(Lesson).all():
+    '''for i in db_sess.query(Lesson).all():
         if i.id == lesson:
             test = i.test
-            break
+            break'''
     if test is None:
         return redirect(f'/lesson/{lesson}')
     '''for i in db_sess.query(Test).all():
@@ -265,7 +265,7 @@ def test(lesson, page=1):
             break'''
     if test is None:
         return redirect(f'/lesson/{lesson}')
-    test = db_sess.query(Test).filter(Test.id == test).first()
+    test = db_sess.query(Test).filter(Test.id == test).one()
     print("TEST", test)
     question = ''
     print(request.method, page)
@@ -273,10 +273,12 @@ def test(lesson, page=1):
         if request.method == 'POST':
             m = test.questions.split(",")[page - 1]
             print("Вопросы:", m)
-            for i in db_sess.query(Question).all():
+            i = db_sess.query(Question).filter(Question.id == int(m)).one()
+            session[f"{id}_{page}"] = i.right == int(request.form['var'])
+            '''for i in db_sess.query(Question).all():
                 if i.id == int(m):
                     session[f"{id}_{page}"] = i.right == int(request.form['var'])
-                    break
+                    break'''
             print(str(page) + ":", session.get(f"{id}_{page}", None))
             return redirect(f'/test/{lesson}/{page + 1}')
         if not page:
@@ -355,10 +357,8 @@ def add():
             db_sess.add(test)
             db_sess.commit()
             db_sess = db_session.create_session()
-            for i in db_sess.query(Test).filter().all():
-                if i.created == 1 and i.author_id == id:
-                    test_id = str(i.id)
-                    break
+            i = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).one()
+            test_id = str(i.id)
         print("Создан тест номер:", test_id)
         x = form.top_image.data
         if x is None:
