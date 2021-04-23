@@ -98,7 +98,7 @@ def weblearn(page=1):
     except AttributeError:
         id = 0
     db_sess = db_session.create_session()
-    d = db_sess.query(Test).filter(Test.author_id == id, Test.created).first()
+    d = db_sess.query(Test).filter(Test.author_id == id, Test.created == 1).first()
     if d is not None:
         d.created = 0
         db_sess.commit()
