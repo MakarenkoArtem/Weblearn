@@ -27,8 +27,8 @@ def abort_if_title_lessons_not_found(lesson_title):
 
 
 class LessonResource(Resource):
-    def get(self, lesson_id=None, title=""):
-        if lesson_id is None:
+    def get(self, lesson_id, title=""):
+        if lesson_id == -1:
             lesson_id = abort_if_title_lessons_not_found(title).id
         lesson = abort_if_lessons_not_found(lesson_id)
         lesson.top_image = str(lesson.top_image)

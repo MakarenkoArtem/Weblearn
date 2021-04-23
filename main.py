@@ -451,7 +451,7 @@ def register():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-api.add_resource(lesson_resource.LessonResource, '/api/v1/lesson/<int:lesson_id>')
+api.add_resource(lesson_resource.LessonResource, '/api/v1/lesson/<int:lesson_id>/<title>')
 
 
 def main():
