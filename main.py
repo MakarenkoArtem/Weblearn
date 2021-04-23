@@ -259,7 +259,7 @@ def test(lesson, page=1):
         print("Все тесты:", i.id, test, str(i.id) == str(test), i.questions)
         if str(i.id) == str(test):
             print("TRUE")
-            test = i
+            test = int(i.id)
             break
     if test is None:
         return redirect(f'/lesson/{lesson}')
