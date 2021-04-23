@@ -20,7 +20,7 @@
 {% endif %}
 {% endblock %}
 {% block content %}
-<h3 align="center"><font color="blue">Тест завершён</font></h3></br></br></br></br></br>
+<h3 align="center"><font color="blue">Тест завершён</font></h3></br></br></br></br>
 <div class="container" style="width: 70%;">
     <div class="progress">
         <div class="progress-bar bg-success" role="progressbar" style="width: {{ t }}%"
@@ -34,7 +34,7 @@
              aria-valuenow="{{ n }}" aria-valuemin="0" aria-valuemax="100">{{ n }}%
         </div>
     </div>
-    </br></br></br></br>
+    </br></br></br>
     <div class="p-4 mb-2 bg-success text-white"
          style="width: 6%; right: 76%; float:left; position: fixed;" align="left"></div>
     <h3 style="right: 66%; float:left; position: fixed;">Правильно</h3>
@@ -43,7 +43,8 @@
     <h3 style="float:left; right: 40%; position: fixed;">Неправильно</h3>
     <div class="p-4 mb-2 bg-dark text-white"
          style="width: 6%; right: 26%; float:left; position: fixed;" align="left"></div>
-    <h3 style="float:right; right: 16%; position: fixed;">Без ответа</h3>
+    <h3 style="float:right; right: 16%; position: fixed;">Без ответа</h3></br></br>
+    <div align="center"><img {% if t < 50 %} src="/static/img/bad.png" {% elif t > 75 %} src="/static/img/perfect.png" {% else %}  src="/static/img/norm.png" {% endif %}width="40%"></div>
 </div>
 <div align="center" style="bottom: 5%; right: 40%; position: fixed;">
     <a href="/weblearn" class="btn btn-success btn-lg"><h3>Вернуться на главную</h3></a></div>
