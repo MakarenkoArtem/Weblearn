@@ -61,7 +61,7 @@ def not_found(error):
 
 
 @app.route('/del/<int:lesson>')
-def del_lesson(lesson):
+def del_lesson(lesson): # страница для удаления урока
     try:
         id = current_user.id
     except AttributeError:
@@ -95,7 +95,7 @@ def del_lesson(lesson):
 @app.route('/weblearn')
 @app.route('/weblearn/page=<int:page>')
 @app.route('/weblearn/page=<int:page>/<int:lesson_del>')
-def weblearn(page=1, lesson_del=0):
+def weblearn(page=1, lesson_del=0): # главная страница
     try:
         id = current_user.id
     except AttributeError:
@@ -166,9 +166,8 @@ def weblearn(page=1, lesson_del=0):
     return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts,
                            pages=pages, name=name, page=page, lesson_del=lesson_del)
 
-
 @app.route('/lesson/<int:lesson>')
-def lesson(lesson):
+def lesson(lesson): # форма урока
     try:
         id = current_user.id
     except AttributeError:
@@ -178,7 +177,6 @@ def lesson(lesson):
     db_sess = db_session.create_session()
     print("LESSON", lesson)
     lesson = db_sess.query(Lesson).filter(Lesson.id == lesson).first()
-    print(lesson.id)
     with open(f'static/img/top_images/{id}_{lesson.id}.png', 'wb') as file:
         file.write(lesson.top_image)
     images = []
@@ -200,12 +198,12 @@ def lesson(lesson):
 
 
 @app.route('/')
-def choice():
+def choice(): # выбор входа или регистрации
     return render_template("choice.html")
 
 
 @app.route('/entry', methods=['GET', 'POST'])
-def entry():
+def entry(): # форма для входа
     form = EntryForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -225,7 +223,7 @@ def entry():
 
 
 @app.route('/add_question', methods=['GET', 'POST'])
-def add_question():
+def add_question(): # форма для добавления вопроса в тест
     try:
         id = current_user.id
     except AttributeError:
@@ -270,7 +268,7 @@ def add_question():
 
 @app.route('/test/<int:lesson>', methods=['GET', 'POST'])
 @app.route('/test/<int:lesson>/<int:page>', methods=['GET', 'POST'])
-def test(lesson, page=1):
+def test(lesson, page=1): # Форма теста
     try:
         id = current_user.id
     except AttributeError:
@@ -344,13 +342,13 @@ def test(lesson, page=1):
         [remove(f"static/img/tests_images/{i}") for i in listdir("static/img/tests_images") if
          i.split("_")[0] == str(lesson) and i.split(".")[-1] == 'png']
         return render_template('end_test.html', id=id, t=round(s[0] / sum(s) * 100, 2), name=name,
-                               f=round(s[1] / sum(s) * 100, 2), n=round(s[2] / sum(s) * 100, 2))
+                               f=round(s[1] / sum(s) * 100, 2), n=round(s[2] / sum(s) * 100, 2)) # результаты теста
     return render_template('test.html', varia=varia, id=id, lesson=lesson, page=page,
-                           question=question, name=name)
+                           question=question, name=name) # новый вопрос теста
 
 
 @app.route('/add', methods=['GET', 'POST'])
-def add():
+def add(): # форма для добавления теста
     try:
         id = current_user.id
     except AttributeError:
@@ -422,7 +420,7 @@ def add():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def register():
+def register(): # форма для регистрации
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -450,10 +448,10 @@ def register():
         return redirect('/weblearn')
     return render_template('register.html', title='Регистрация', form=form)
 
-
+"""*********************Подключение API*******************************"""
 api.add_resource(lesson_resource.LessonResource, '/api/v1/lesson/<int:lesson_id>/<title>')
 api.add_resource(lessons_resource.LessonsResource, '/api/v1/lessons')
-
+"""*******************************************************************"""
 
 def main():
     db_session.global_init()
