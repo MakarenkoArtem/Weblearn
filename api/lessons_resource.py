@@ -14,11 +14,14 @@ def abort_if_lessons_not_found(lesson_id):
     return lesson
 
 
-
 class LessonsResource(Resource):
     def get(self):
         session = db_session.create_session()
-        lessons = session.query(Lesson)
-        for lesson in lessons:
+        lessons_l = session.query(Lesson)
+        lessons = []
+        for lesson in lessons_l:
             lesson.top_image = lesson.top_image.hex()
-        return jsonify({'lessons': {lesson.id: lesson.to_dict(only=[i for i in list(vars(lesson).keys()) if i not in ['_sa_instance_state', 'id']]) for lesson in lessons}})
+            lessons.append(lesson)
+        return jsonify({'lessons': {lesson.id: lesson.to_dict(
+            only=[i for i in list(vars(lesson).keys()) if i not in ['_sa_instance_state', 'id']]) for
+                                    lesson in lessons}})
