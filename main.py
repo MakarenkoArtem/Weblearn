@@ -92,6 +92,11 @@ def del_lesson(lesson):
     return redirect('/weblearn')
 
 
+@app.route('/w')
+def w():
+    return f'<img src="{url_for("static", filename="img/404.jpg")}" width="50%" height="50%" align="top" alt="...">'
+
+
 @app.route('/weblearn')
 @app.route('/weblearn/page=<int:page>')
 @app.route('/weblearn/page=<int:page>/<int:lesson_del>')
