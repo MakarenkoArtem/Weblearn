@@ -36,5 +36,10 @@ class LessonResource(Resource):
             lesson = abort_if_title_lessons_not_found(title)
         else:
             lesson = abort_if_lessons_not_found(lesson_id)
-        lesson.top_image = lesson.top_image.hex()
-        return jsonify({'lesson': lesson.to_dict(only=[i for i in list(vars(lesson).keys()) if i not in ['_sa_instance_state']])})
+        lessons = []
+        for i in lesson:
+            lesson.top_image = lesson.top_image.hex()
+            lessons.append(i)
+        return jsonify({'lessons': {lesson.id: lesson.to_dict(
+            only=[i for i in list(vars(lesson).keys()) if i not in ['_sa_instance_state', 'id']]) for
+                                    lesson in lessons}})
