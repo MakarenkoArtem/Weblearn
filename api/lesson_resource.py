@@ -37,5 +37,4 @@ class LessonResource(Resource):
         else:
             lesson = abort_if_lessons_not_found(lesson_id)
         lesson.top_image = str(lesson.top_image)
-        print(list(vars(lesson).keys()))
         return jsonify({'lesson': lesson.to_dict(only=[i for i in list(vars(lesson).keys()) if i not in ['top_image', '_sa_instance_state']])})
