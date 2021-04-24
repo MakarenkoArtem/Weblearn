@@ -19,4 +19,6 @@ class LessonsResource(Resource):
     def get(self):
         session = db_session.create_session()
         lessons = session.query(Lesson)
-        return jsonify({'lessons': {lesson.id: lesson.to_dict(only=[i for i in list(vars(lesson).keys()) if i not in ['top_image', '_sa_instance_state', 'id']]) for lesson in lessons}})
+        for lesson in lessons:
+            lesson.top_image = lesson.top_image.hex()
+        return jsonify({'lessons': {lesson.id: lesson.to_dict(only=[i for i in list(vars(lesson).keys()) if i not in ['_sa_instance_state', 'id']]) for lesson in lessons}})
