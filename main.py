@@ -138,6 +138,8 @@ def weblearn(page=1, lesson_del=0): # главная страница
     for i in lessons:
         open(f'static/img/top_images/{id}_{i.id}.png', 'wb').write(i.top_image)
         img.append(f'{id}_{i.id}.png')
+        if i.items is None:
+            i.items = ""
         texts.append(i.text.split("\r")[0][:31] + "...")
     c = len(db_sess.query(Lesson).all())
     max = c // 12
@@ -180,6 +182,8 @@ def lesson(lesson): # форма урока
     with open(f'static/img/top_images/{id}_{lesson.id}.png', 'wb') as file:
         file.write(lesson.top_image)
     images = []
+    if lesson.items is None:
+        lesson.items = ""
     if lesson.images:
         for i in lesson.images.split(","):
             img = db_sess.query(Image).filter(Image.id == i).first()
@@ -401,7 +405,7 @@ def add(): # форма для добавления теста
             x = open("static/img/top_images/0.png", "rb")
         lesson = Lesson(author_id=id, title=form.title.data, top_image=resize(x.read()),
                         text=form.text.data, images=",".join([str(i) for i in img]),
-                        test=test_id)
+                        test=test_id, items=form.items.data.strip("#"))
         db_sess.add(lesson)
         db_sess.commit()
         if test_id != "":

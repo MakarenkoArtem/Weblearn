@@ -11,7 +11,7 @@ class Lesson(SqlAlchemyBase, SerializerMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     author_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     items = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    title = sqlalchemy.Column(sqlalchemy.String, nullable=False)
+    title = sqlalchemy.Column(sqlalchemy.String, nullable=True, default="")
     top_image = sqlalchemy.Column(sqlalchemy.LargeBinary, nullable=False)
     text = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     test = sqlalchemy.Column(sqlalchemy.String, nullable=True)

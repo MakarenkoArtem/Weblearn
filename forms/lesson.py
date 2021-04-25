@@ -9,6 +9,7 @@ class LessonForm(FlaskForm):
     top_image = FileField('Главная картинка',
                        validators=[FileAllowed(['jpg', 'png', "bmp"], 'Images only!')])
     text = TextAreaField("Текст урока", validators=[DataRequired()])
+    items = StringField('Категория урока', default="")
     images = MultipleFileField('Картинки',
                        validators=[FileAllowed(['jpg', 'png', "bmp"], 'Images only!')])
     test = BooleanField('Создать тест')

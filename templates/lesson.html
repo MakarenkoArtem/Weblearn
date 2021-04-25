@@ -24,7 +24,7 @@
 {% block content %}
 <div class="container" style="float: left; margin: 0em 0em 0em 2.4%; width: 71%;">
     <h1 align="center"><font color="blue">{{ lesson.title }}</font></h1>
-    <br>
+    <br><h4 align="center" style="margin-left: 0px"><font color="blue">{% if lesson.items %}#{% endif %}{{ lesson.items }}</font></h4>
     <p align="center"><img
             src="/static/img/top_images/{{ id }}_{{ lesson.id }}.png" width="50%" height="50%"
             align="top" alt="..."></p><br>
