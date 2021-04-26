@@ -3,6 +3,7 @@ from flask_restful import Api
 from flask_login import LoginManager, current_user, login_user
 from werkzeug.security import check_password_hash
 from forms.user import RegisterForm, EntryForm
+from api.users_resource import UsersListResource, UsersResource
 from forms.lesson import LessonForm
 from data.users import User
 from data.questions import Question
@@ -455,6 +456,8 @@ def register(): # форма для регистрации
 """*********************Подключение API*******************************"""
 api.add_resource(lesson_resource.LessonResource, '/api/v1/lesson/<int:lesson_id>/<title>')
 api.add_resource(lessons_resource.LessonsResource, '/api/v1/lessons')
+api.add_resource(UsersResource, '/api/v2/users/<int:user_id>')
+api.add_resource(UsersListResource, '/api/v2/users')
 """*******************************************************************"""
 
 def main():
