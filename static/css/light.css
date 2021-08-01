@@ -1,6 +1,4 @@
-body {
-    background: #ffffff;
-}
+body {background: #ffffff;}<!--это перекрашивает фон при ошибках, то есть вместь картинок body перекрашвается-->
 .gold_bulb {
     fill: #ffcc5e;
     stroke: #6D6D6D;

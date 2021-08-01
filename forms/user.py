@@ -1,4 +1,4 @@
-rom flask_wtf import FlaskForm
+from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, TextAreaField, SubmitField
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.fields.html5 import EmailField
