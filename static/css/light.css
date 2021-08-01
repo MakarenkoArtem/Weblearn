@@ -1,0 +1,42 @@
+body {
+    background: #ffffff;
+}
+.gold_bulb {
+    fill: #ffcc5e;
+    stroke: #6D6D6D;
+    stroke-miterlimit: 10;
+}
+h1{
+    color: #000000;
+}
+h3{
+    color: #000000;
+}
+h5{
+    color: #000000;
+}
+.mainText{
+    color: blue
+}
+.card {
+    background: #ffffff;
+}
+.card-text{
+    color: #000000;
+}
+.hesh{
+    color: blue
+}
+label {
+    color: #000000;
+}
+input {
+    color: #000000;
+}
+.form-control{
+    color: #000000;
+    background: #ffffff;
+}
+.card {
+    fill: #ffffff;
+}

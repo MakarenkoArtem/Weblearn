@@ -1,0 +1,47 @@
+{% extends "template.html" %}
+
+{% block dropdown %}
+{% if id != 0 %}
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            <img src="/static/img/user_images/{{ id }}.png" align="right" width="65" height="65"
+                 alt="" class="round">
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li class="dropdown-header"><h4><font color="blue">{{ name }}</font></h4>
+                Настройка пользователя</li>
+            <li><a class="dropdown-item" href="/">Выйти</a></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Уроки</li>
+            <li><a class="dropdown-item" href="/weblearn">Посмотреть уроки</a></li>
+        </ul>
+    </div>
+{% else %}
+    </br></br></br>
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class="container" style="float: left; margin: 0em 0em 0em 2.4%; width: 71%;">
+    <h1 align="center" class="mainText">{{ lesson.title }}</h1>
+    <br><h4 align="center" style="margin-left: 0px" class="mainText">{% if lesson.items %}#{% endif %}{{ lesson.items }}</h4>
+    <p align="center"><img
+            src="/static/img/top_images/{{ id }}_{{ lesson.id }}.png" width="50%" height="50%"
+            align="top" alt="..."></p><br>
+    <h3>{{ lesson.text }}</font></h3>
+    <a href="/weblearn" style="float: left;" class="btn btn-danger">Назад</a>
+</div>
+<div class="container" style="padding: 5px; float: right; width: 25%;">
+    {% for img in images %}<!-- margin: 0em 0em 0em 0em - Отступ сверху, справа, снизу и слева -->
+    <br>
+    <p align="right" style="right: 1.6%; top: 1.6%; margin: 0em 3% 0em 0em"><img
+            src="/static/img/all_images/{{ img }}" width="90%" height="90%"
+            align="top" alt="..."></p>
+    {% endfor %}
+</div>
+{% if test %}
+<a href="/test/{{ lesson.id }}" style="bottom: 2.4%; right: 1.6%; position: fixed;">
+    <img src="/static/img/icons8-survey-48.png" width="150%">
+</a>
+{% endif %}
+{% endblock %}

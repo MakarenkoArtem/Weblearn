@@ -1,0 +1,79 @@
+{% extends "template.html" %}
+
+{% block dropdown %}
+{% if id != 0 %}
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        <img src="/static/img/user_images/{{ id }}.png" align="right" width="65" height="65"
+             alt="" class="round">
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
+        <li class="dropdown-header"><h4 class="mainText">{{ name }}</h4>
+            Настройка пользователя
+        </li>
+        <li><a class="dropdown-item" href="/">Выйти</a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header">Уроки</li>
+        <li><a class="dropdown-item" href="/weblearn">Посмотреть уроки</a></li>
+    </ul>
+</div>
+{% else %}
+</br></br></br>
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class="container" style="width: 70%;">
+    <h3 align="center" class="mainText">Здесь распологаются уроки с заданиями к ним</h3>
+
+    <br><br>
+    <table class="table.table-borderless" border-spacing="50px" align="center">
+        {% for lesson in lessons %}
+        {% if loop.index % 3 == 1 %}
+        <tr>
+            {% endif %}
+            <td>
+                <div class="card" style="width: 295px; position: relative;">
+                    <img src="/static/img/top_images/{{ img[loop.index-1] }}" class="card-img-top"
+                         height="290px" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ lesson.title }}</h5>
+                        <p class="card-text">{{ texts[loop.index - 1] }}<h4 align="left" class="hesh" style="margin-left: 0px">{% if lesson.items %}#{% endif %}{{ lesson.items }}}</h4></p>
+                        <a href="/lesson/{{ lesson.id }}" class="btn btn-primary">Читать</a>
+                        {% if lesson.author_id == id %}
+                        {% if lesson_del == lesson.id %}
+                        <br>
+                        <div style="float: left; position: relative;"><a
+                                href="/weblearn/page={{ page }}"
+                                class="btn btn-danger">Отмена</a></div>
+                        <div style="float: right; position: relative;"><a
+                                href="/del/{{ lesson_del }}"
+                                class="btn btn-danger">Точно удалить</a></div>
+                        {% else %}
+                        <div style="float: right; position: relative;"><a
+                                href="/weblearn/page={{ page }}/{{ lesson.id }}"
+                                class="btn btn-danger">Удалить</a></div>
+                        {% endif %}{% endif %}
+                    </div>
+                </div>
+            </td>
+            {% if loop.index % 3 == 0 or loop.last %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+</div>
+<div align="center" style="bottom: 12.4%; position: relative;">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% for page in pages %}
+            <li class="page-item"><a class="page-link" {% if page== "..." %} aria-disabled="true" {%
+                else %} href="/weblearn/page={{ page }}" {% endif %}>{{ page }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</div>
+<a href="/add" style="bottom: 2.4%; right: 1.6%; position: fixed;">
+    <img src="/static/img/icons8-libre-office-writer.svg" width="150%">
+</a>
+{% endblock %}

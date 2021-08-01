@@ -1,0 +1,61 @@
+body {
+    background: #444444;
+}
+.gold_bulb {
+    fill: #ffffff;
+    stroke: #6D6D6D;
+    stroke-miterlimit: 10;
+}
+h1{
+    color: #ffffff;
+}
+h3{
+    color: #ffffff;
+}
+h5{
+    color: #ffffff;
+}
+.mainText{
+    color: #2c8df5;
+}
+.card-text{
+    color: #ffffff;
+}
+.hesh{
+    color: #2c8df5;
+}
+label {
+    color: #ffffff;
+}
+input {
+    color: #ffffff;
+}
+
+.form-control{
+    color: #ffffff !important;
+    background: #545454 !important;
+}
+
+.dropdown-item:hover{
+    color: #ffffff;
+    background: #505050 !important;
+}
+.dropdown-item{
+    color: #ffffff;
+}
+.dropdown-menu{
+    background: #505050;
+}
+.dropdown-menu:hover{
+    background: #545454;
+}
+.dropdown-header{
+    color: #aaaaaa;
+}
+.card {
+    background: #505050
+}
+
+.card:hover {
+    background: #545454
+}
