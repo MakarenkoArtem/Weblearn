@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+{% block dropdown %}
+{% if id != 0 %}
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            <img src="/static/img/user_images/{{ id }}.png" align="right" width="65" height="65"
+                 alt="" class="round">
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li class="dropdown-header"><h4><font color="blue">{{ name }}</font></h4>
+                Настройка пользователя</li>
+            <li><a class="dropdown-item" href="/">Выйти</a></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Уроки</li>
+            <li><a class="dropdown-item" href="/weblearn">Посмотреть уроки</a></li>
+        </ul>
+    </div>
+{% else %}
+    </br></br></br>
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div align="center"><img src="/static/img/tests_images/{{ lesson }}_{{ page }}.png" width="40%"></div>
+    <h2 align="center">{{ question }}</h2>
+    <form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        {% for var in varia %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="var" id='{{ loop.index }}' value='{{ loop.index }}' checked>
+                <label class="form-check-label" for='{{ loop.index }}'><h3>{{ var }}</h3></label></br></br>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="/test/{{ lesson }}/0" style="position: relative; float: left; left: 5%;" class="btn btn-primary"><h2>Завершить тест</h2></a>
+        <form method="post"><button type="submit" style="position: relative; float: right; right: 5%;" class="btn btn-success"><h2>Перейти к следующему вопросу</h2></a></button>
+</form></div>
+{% endblock %}
