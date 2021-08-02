@@ -49,7 +49,7 @@ def not_found(error):
         id = current_user.id
     except AttributeError:
         id = 0
-    return render_template("404.html", id=id)
+    return render_template("500.html", id=id)
 
 
 @app.errorhandler(404)
