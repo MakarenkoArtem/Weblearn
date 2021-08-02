@@ -17,6 +17,8 @@ def global_init():
     #     raise Exception("Необходимо указать файл базы данных.")
     if 'HEROKU_POSTGRESQL_ONYX_URL' in os.environ:
         conn_str = os.environ['HEROKU_POSTGRESQL_ONYX_URL'].replace('postgres://', 'postgresql://')  # сработает на Heroku
+    elif 'DATABASE_URL' in os.environ:
+        conn_str = os.environ['DATABASE_URL'].replace('postgres://', 'postgresql://')  # сработает на Heroku
     else:
         from config import LOCAL_DB, DB  # сработает локально
         conn_str = LOCAL_DB
