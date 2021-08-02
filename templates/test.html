@@ -23,13 +23,13 @@
 {% block content %}
 <div class="container">
     <div align="center"><img src="/static/img/tests_images/{{ lesson }}_{{ page }}.png" width="40%"></div>
-    <h2 align="center">{{ question }}</h2>
+    <h2 align="center" class="hesh">{{ question }}</h2>
     <form method="post" enctype="multipart/form-data">
     <div class="form-group">
         {% for var in varia %}
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="var" id='{{ loop.index }}' value='{{ loop.index }}' checked>
-                <label class="form-check-label" for='{{ loop.index }}'><h3>{{ var }}</h3></label></br></br>
+                <label class="form-check-label" for='{{ loop.index }}'><h3 class="hesh">{{ var }}</h3></label></br></br>
             </div>
         {% endfor %}
     </div>
