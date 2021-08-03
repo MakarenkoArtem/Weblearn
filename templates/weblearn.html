@@ -38,7 +38,7 @@
                          height="290px" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{ lesson.title }}</h5>
-                        <p class="card-text">{{ texts[loop.index - 1] }}<h4 align="left" class="hesh" style="margin-left: 0px">{% if lesson.items %}#{% endif %}{{ lesson.items }}}</h4></p>
+                        <p class="card-text">{{ texts[loop.index - 1] }}<h4 align="left" class="hesh" style="margin-left: 0px">{% if lesson.items %}#{% endif %}{{ lesson.items }}</h4></p>
                         <a href="/lesson/{{ lesson.id }}" class="btn btn-primary">Читать</a>
                         {% if lesson.author_id == id %}
                         {% if lesson_del == lesson.id %}
