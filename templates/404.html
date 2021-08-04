@@ -1,27 +1,38 @@
 {% extends "template.html" %}
 {% block dropdown %}
 {% if id != 0 %}
-    <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-            <img src="/static/img/user_images/{{ id }}.png" align="right" width="65" height="65"
-                 alt="" class="round">
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right">
-            <li class="dropdown-header"><h4><font color="blue">{{ name }}</font></h4>
-                Настройка пользователя</li>
-            <li><a class="dropdown-item" href="/">Выйти</a></li>
-            <li class="divider"></li>
-            <li class="dropdown-header">Уроки</li>
-            <li><a class="dropdown-item" href="/weblearn">Посмотреть уроки</a></li>
-        </ul>
-    </div>
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        <img src="/static/img/user_images/{{ id }}.png" align="right" width="65" height="65"
+             alt="" class="round">
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
+        <li class="dropdown-header"><h4><font color="blue">{{ name }}</font></h4>
+            Настройка пользователя
+        </li>
+        <li><a class="dropdown-item" href="/">Выйти</a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header">Уроки</li>
+        <li><a class="dropdown-item" href="/weblearn">Посмотреть уроки</a></li>
+    </ul>
+</div>
 {% else %}
-    </br></br></br>
+</br></br></br>
 {% endif %}
 {% endblock %}
 {% block content %}
 <body style="background-image: url('/static/img/404.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-size: 100% 100%;"></body> <!--в теории тут должно происходить переопределения body и появляться картинка-->
+<!--ul class="active-filters">
+    <li class="active-filters__item" data-filter="free">Бесплатно<span class="active-filters__item-remove js-reset"><i
+            class="far svg-inline--fa fa-times is-not-spaced"></i></span></li>
+    <li class="active-filters__item" data-filter="file_types" data-filter-value="2">3D Studio (<a
+            id="9fdb84ce3cdf4d193e54852b60116a88" href="https://3ds.cgtrader.com/ru">.3ds</a>)<span
+            class="active-filters__item-remove js-reset"><i
+            class="far svg-inline--fa fa-times is-not-spaced"></i></span></li>
+    <li class="active-filters__reset js-reset-all"><i class="far svg-inline--fa fa-times"></i>Сбросить фильтры</li>
+</ul-->
 <div align="center" style="bottom: 2.6%; right: 40%; position: fixed;">
-    <a href="/weblearn" class="btn btn-success btn-lg"><h3><font color="#faaae2">На главную страницу</font></h3></a></div>
+    <a href="/weblearn" class="btn btn-success btn-lg"><h3><font color="#faaae2">На главную страницу</font></h3></a>
+</div>
 {% endblock %}
