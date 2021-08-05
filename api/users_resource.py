@@ -9,7 +9,7 @@ def abort_if_users_not_found(user_id):
     session = db_session.create_session()
     user = session.query(User).get(user_id)
     if not user:
-        abort(404, message=f"Lesson {user_id} not found")
+        abort(404, message=f"User {user_id} not found")
     return user
 
 
