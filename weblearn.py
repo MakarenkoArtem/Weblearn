@@ -183,7 +183,7 @@ def weblearn(page=1, lesson_del=0):  # главная страница
         name = name.nickname
     except sqlalchemy.orm.exc.NoResultFound:
         name = ''
-    cards = [Card(lesson, db_sess.query(User).filter(User.id == lesson.author_id)) for lesson in lessons]
+    cards = [Card(lesson, db_sess.query(User).filter(User.id == lesson.author_id).one()) for lesson in lessons]
     db_sess.commit()
     print(datetime.datetime.now() - start)
     return render_template("weblearn.html", id=id, img=img, lessons=cards, texts=texts,
