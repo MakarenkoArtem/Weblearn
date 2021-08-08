@@ -19,6 +19,21 @@ from PIL import Image as Imagepil
 import sqlalchemy
 import datetime
 
+
+class Card():
+    def __init__(self, lesson, user):
+        self.id = lesson.id
+        try:
+            self.author = user.nickname
+        except sqlalchemy.orm.exc.NoResultFound:
+            self.author = "???"
+        self.items = lesson.items
+        self.title = lesson.title
+        self.top_image = lesson.top_image
+        self.text = lesson.text
+        self.test = lesson.test
+        self.images = lesson.images
+
 app = Flask(__name__)
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=1)
 api = Api(app)
@@ -169,9 +184,10 @@ def weblearn(page=1, lesson_del=0):  # главная страница
     except sqlalchemy.orm.exc.NoResultFound:
         name = ''
     finally:
-        db_sess.commit()
+    cards = [Card(lesson, db_sess.query(User).filter(User.id == lesson.author_id)) for lesson in lessons]
+    db_sess.commit()
     print(datetime.datetime.now() - start)
-    return render_template("weblearn.html", id=id, img=img, lessons=lessons, texts=texts,
+    return render_template("weblearn.html", id=id, img=img, lessons=cards, texts=texts,
                            pages=pages, name=name, page=page, lesson_del=lesson_del)
 
 
