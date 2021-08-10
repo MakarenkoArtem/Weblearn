@@ -1,40 +1,70 @@
-body {background: #ffffff;}/*это перекрашивает фон при ошибках, то есть вместь картинок body перекрашвается*/
+body {/*это перекрашивает фон при ошибках, то есть вместь картинок body перекрашвается*/
+    -webkit-background: #ffffff;
+    background: #ffffff;
+}
+
 .gold_bulb {
     fill: #ffcc5e;
     stroke: #6D6D6D;
     stroke-miterlimit: 10;
+    -webkit-fill: #ffcc5e;
+    -webkit-stroke: #6D6D6D;
+    -webkit-stroke-miterlimit: 10;
 }
-h1{
+
+h1 {
+    -webkit-color: #000000;
     color: #000000;
 }
-h3{
+
+h3 {
+    -webkit-color: #000000;
     color: #000000;
 }
-h5{
+
+h5 {
+    -webkit-color: #000000;
     color: #000000;
 }
-.mainText{
+
+.mainText {
+    -webkit-color: blue
     color: blue
 }
+
 .card {
+    -webkit-background: #ffffff;
     background: #ffffff;
 }
-.card-text{
+
+.card-text {
+    -webkit-color: #000000;
     color: #000000;
 }
-.hesh{
-    color: blue
+
+.hesh {
+    color: blue;
+    -webkit-color: blue;
 }
+
 label {
     color: #000000;
+    -webkit-color: #000000;
 }
+
 input {
     color: #000000;
+    -webkit-color: #000000;
 }
-.form-control{
+
+.form-control {
+    -webkit-color: #000000;
+    -webkit-background: #ffffff;
     color: #000000;
     background: #ffffff;
 }
+
 .card {
     fill: #ffffff;
+    -webkit-fill: #ffffff;
 }

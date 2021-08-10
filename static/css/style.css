@@ -1,7 +1,14 @@
 h4{
+    -weblit-margin-left: 20px; /* Отступ слева */
     margin-left: 20px; /* Отступ слева */
    }
 .round {
+    -weblit-border-radius: 10px; /* Радиус скругления */
+    /*border: 3px solid red;*/
+    /* Параметры рамки */
+    -weblit-box-shadow: 0 0 7px #666; /* Параметры тени */
+    -weblit-width: 60px;
+    -weblit-height: 60px;
     border-radius: 10px; /* Радиус скругления */
     /*border: 3px solid red;*/
     /* Параметры рамки */
@@ -10,21 +17,33 @@ h4{
     height: 60px;
    }
 .round_gif {
+    -weblit-border-radius: 15px; /* Радиус скругления */
+    -weblit-border: 4px solid blue; /* Параметры рамки */
+    -weblit-box-shadow: 0 0 7px #666; /* Параметры тени */
     border-radius: 15px; /* Радиус скругления */
     border: 4px solid blue; /* Параметры рамки */
     box-shadow: 0 0 7px #666; /* Параметры тени */
    }
 td {
+    -weblit-padding: 15px;
+    -weblit-padding-left: 20px;
   padding: 15px;
   padding-left: 20px;
 }
 .testcss {
-    href:"/static/css/light.css"
+    -weblit-href:"/static/css/light.css";
+    href:"/static/css/light.css";
 }
 .card:hover {
+    -weblit-transform: scale(1.05);
     transform: scale(1.05);
 }
 .bd-example {
+    -weblit-position: relative;
+    -weblit-padding: 1rem;
+    -weblit-margin: 1rem -.75rem 0;
+    -weblit-border: solid #dee2e6;
+    -weblit-border-width: 1px 0 0;
     position: relative;
     padding: 1rem;
     margin: 1rem -.75rem 0;
@@ -33,21 +52,26 @@ td {
 }
 .center-img {
   text-align: center;
+    -weblit-text-align: center;
 }
 entry{
+    -weblit-margin-right:50%;
     margin-right:50%;
 }
 .btn-primary:hover {
+    -weblit-box-shadow: 0 8px 65px -5px #007bff;
     box-shadow: 0 8px 65px -5px #007bff;
 }
 .btn-success:hover {
+    -weblit-box-shadow: 0 8px 65px -5px #4ff75a;
     box-shadow: 0 8px 65px -5px #4ff75a;
 }
 .btn-danger:hover {
+    -weblit-box-shadow: 0 8px 65px -5px #f53d3d;
     box-shadow: 0 8px 65px -5px #f53d3d;
 }
-}
 .blink-1 {
+    -weblit-animation-delay: 0s;
     animation-delay: 0s;
 }
 
@@ -65,10 +89,10 @@ entry{
 
 @-webkit-keyframes glow {
     0% {
-        fill-opacity: 0.25;
+        -webkit-fill-opacity: 0.25;
     }
     100% {
-        fill-opacity: 1
+        -webkit-fill-opacity: 1
     }
 }
 

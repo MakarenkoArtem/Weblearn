@@ -1,59 +1,97 @@
-body {background: #444444;}/*это перекрашивает фон при ошибках, то есть вместь картинок body перекрашвается*/
+body {/*это перекрашивает фон при ошибках, то есть вместь картинок body перекрашвается*/
+    -webkit-background: #444444;
+    background: #444444;
+}
+
 .gold_bulb {
     fill: #ffffff;
     stroke: #6D6D6D;
     stroke-miterlimit: 10;
+    -webkit-fill: #ffffff;
+    -webkit-stroke: #6D6D6D;
+    -webkit-stroke-miterlimit: 10;
 }
-h1{
-    color: #ffffff;
-}
-h3{
-    color: #ffffff;
-}
-h5{
-    color: #ffffff;
-}
-.mainText{
-    color: #2c8df5;
-}
-.card-text{
-    color: #ffffff;
-}
-.hesh{
-    color: #2c8df5;
-}
-label {
-    color: #ffffff;
-}
-input {
+
+h1 {
+    -webkit-color: #ffffff;
     color: #ffffff;
 }
 
-.form-control{
+h3 {
+    -webkit-color: #ffffff;
+    color: #ffffff;
+}
+
+h5 {
+    color: #ffffff;
+    -webkit-color: #ffffff;
+}
+
+.mainText {
+    color: #2c8df5;
+    -webkit-color: #2c8df5;
+}
+
+.card-text {
+    color: #ffffff;
+    -webkit-color: #ffffff;
+}
+
+.hesh {
+    color: #2c8df5;
+    -webkit-color: #2c8df5;
+}
+
+label {
+    -webkit-color: #ffffff;
+    color: #ffffff;
+}
+
+input {
+    -webkit-color: #ffffff;
+    color: #ffffff;
+}
+
+.form-control {
+    -webkit-color: #ffffff !important;
+    -webkit-background: #545454 !important;
     color: #ffffff !important;
     background: #545454 !important;
 }
 
-.dropdown-item:hover{
+.dropdown-item:hover {
+    -webkit-color: #ffffff;
+    -webkit-background: #505050 !important;
     color: #ffffff;
     background: #505050 !important;
 }
-.dropdown-item{
+
+.dropdown-item {
+    -webkit-color: #ffffff;
     color: #ffffff;
 }
-.dropdown-menu{
+
+.dropdown-menu {
+    -webkit-background: #505050;
     background: #505050;
 }
-.dropdown-menu:hover{
+
+.dropdown-menu:hover {
+    -webkit-background: #545454;
     background: #545454;
 }
-.dropdown-header{
+
+.dropdown-header {
+    -webkit-color: #aaaaaa;
     color: #aaaaaa;
 }
+
 .card {
-    background: #505050
+    -webkit-background: #505050;
+    background: #505050;
 }
 
 .card:hover {
-    background: #545454
+    -webkit-background: #545454;
+    background: #545454;
 }
