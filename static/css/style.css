@@ -28,6 +28,9 @@
     table{
         border-spacing: 5px;
     }
+    td{
+        padding: 1px;
+    }
 }
 @media (min-width: 700px) {
     svg{
