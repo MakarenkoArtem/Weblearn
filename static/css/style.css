@@ -30,6 +30,7 @@
     }
     td{
         padding: 1px;
+        -weblit-padding: 1px;
     }
 }
 @media (min-width: 700px) {
@@ -61,6 +62,12 @@
     }*/
     table{
         border-spacing: 30px;
+    }
+    td {
+        -weblit-padding: 15px;
+        -weblit-padding-left: 20px;
+      padding: 15px;
+      padding-left: 20px;
     }
 }
 
@@ -95,12 +102,7 @@ h4{
     box-shadow: 0 0 7px #666; /* Параметры тени */
     width: 60%;
    }
-td {
-    -weblit-padding: 15px;
-    -weblit-padding-left: 20px;
-  padding: 15px;
-  padding-left: 20px;
-}
+
 .testcss {
     -weblit-href:"/static/css/light.css";
     href:"/static/css/light.css";
