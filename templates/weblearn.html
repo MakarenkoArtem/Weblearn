@@ -33,9 +33,9 @@
             {% endif %}
             <td>
                 <a href="/lesson/{{ lesson.id }}" style="text-decoration: none;">
-                    <div class="card" style="width: 100%; position: relative;">
+                    <div class="card" style="position: relative;">
                     <img src="/static/img/top_images/{{ img[loop.index-1] }}" class="card-img-top"
-                         height="290px" alt="...">
+                         alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{ lesson.title }}</h5>
                         <p class="card-text">{{ texts[loop.index - 1] }}<h4 align="left" class="hesh" style="margin-left: 0px">{% if lesson.items %}#{% endif %}{{ lesson.items }}</h4></p>

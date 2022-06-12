@@ -18,6 +18,9 @@
     .dropdown{
         width:30%;
     }
+    .card-img-top{
+        /*height: 100px;*/
+    }
 }
 @media (min-width: 700px) {
     svg{
@@ -39,8 +42,15 @@
     .dropdown{
         width:6%;
     }
+    .card-img-top{
+        /*height: 100px;/
+    }
 }
 
+.card{
+    font-size:50%;
+    /*width: 295px;*/
+}
 h4{
     -weblit-margin-left: 20px; /* Отступ слева */
     margin-left: 20px; /* Отступ слева */

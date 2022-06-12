@@ -5,7 +5,7 @@
     <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-            <img src="/static/img/user_images/{{ id }}.png" align="right" width="65" height="65"
+            <img src="/static/img/user_images/{{ id }}.png" align="right"
                  alt="" class="round">
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
@@ -26,7 +26,7 @@
     <h1 align="center" class="mainText">{{ lesson.title }}</h1>
     <br><h4 align="center" style="margin-left: 0px" class="mainText">{% if lesson.items %}#{% endif %}{{ lesson.items }}</h4>
     <p align="center"><img
-            src="/static/img/top_images/{{ id }}_{{ lesson.id }}.png" width="50%" height="50%"
+            src="/static/img/top_images/{{ id }}_{{ lesson.id }}.png" width="50%" height="50%" style="font-size:50%"
             align="top" alt="..."></p><br>
     <h3>{{ lesson.text }}</font></h3>
     <a href="/weblearn" style="float: left;" class="btn btn-danger">Назад</a>
