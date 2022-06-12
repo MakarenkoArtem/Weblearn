@@ -34,6 +34,7 @@ class Card():
         self.test = lesson.test
         self.images = lesson.images
 
+
 app = Flask(__name__)
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=1)
 api = Api(app)
@@ -456,14 +457,10 @@ def register():  # форма для регистрации
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
-            return render_template('register.html',
-                                   form=form,
-                                   message="Пароли не совпадают")
+            return render_template('register.html', form=form, message="Пароли не совпадают")
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
-            return render_template('register.html',
-                                   form=form,
-                                   message="Такой пользователь уже есть")
+            return render_template('register.html', form=form, message="Такой пользователь уже есть")
         x = form.image.data
         if x is None:
             x = open("static/img/user_images/0.png", "rb")
