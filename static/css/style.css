@@ -1,3 +1,27 @@
+@media (min-width: 0px) and (max-width: 700px) {
+    svg{
+        transform: scale(0.82, 0.7);
+
+    }
+    h1, h2, h3, h4, h5, h6 {
+            font-size: 100%;
+    }
+    img{
+        width: 100%;
+    }
+}
+@media (min-width: 700px) {
+    svg{
+        transform: scale(1, 0.84);
+
+    }
+    h1, h2, h3, h4, h5, h6 {
+            font-size: 175%;
+    }
+    img{
+        width: 150%;
+    }
+}
 h4{
     -weblit-margin-left: 20px; /* Отступ слева */
     margin-left: 20px; /* Отступ слева */
