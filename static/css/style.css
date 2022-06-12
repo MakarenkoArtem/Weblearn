@@ -25,6 +25,9 @@
         width: 100px;
         height: 250px;
     }*/
+    table{
+        border-spacing: 5px;
+    }
 }
 @media (min-width: 700px) {
     svg{
@@ -53,6 +56,9 @@
         width: 295px;
         height: 400px;
     }*/
+    table{
+        border-spacing: 30px;
+    }
 }
 
 .card{
