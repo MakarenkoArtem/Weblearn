@@ -15,6 +15,9 @@
     .container{
         width: 70%:
     }
+    .round{
+        width:50%
+    }
     .dropdown{
         width:30%;
     }
@@ -34,6 +37,9 @@
     }
 }
 @media (min-width: 700px) {
+    .round{
+        width:100%
+    }
     svg{
         transform: scale(1, 0.84);
 
