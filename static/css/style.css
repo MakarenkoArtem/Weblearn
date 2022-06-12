@@ -4,13 +4,19 @@
 
     }
     h1, h2, h3, h4, h5, h6 {
-            font-size: 100%;
+            font-size: 95%;
     }
     img{
         width: 100%;
     }
     .welcome{
         width: 100%;
+    }
+    .container{
+        width: 70%:
+    }
+    .dropdown{
+        width:30%;
     }
 }
 @media (min-width: 700px) {
@@ -27,7 +33,14 @@
     .welcome{
         width: 55%;
     }
+    .container{
+        width: 95%:
+    }
+    .dropdown{
+        width:6%;
+    }
 }
+
 h4{
     -weblit-margin-left: 20px; /* Отступ слева */
     margin-left: 20px; /* Отступ слева */
@@ -43,8 +56,8 @@ h4{
     /*border: 3px solid red;*/
     /* Параметры рамки */
     box-shadow: 0 0 7px #666; /* Параметры тени */
-    width: 60px;
-    height: 60px;
+    /*width: 60px;
+    height: 60px;*/
    }
 .round_gif {
     -weblit-border-radius: 15px; /* Радиус скругления */
