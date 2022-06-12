@@ -27,6 +27,7 @@ class Card():
             self.author = user.nickname
         except sqlalchemy.orm.exc.NoResultFound:
             self.author = "???"
+        self.author_id = lesson.author_id
         self.items = lesson.items
         self.title = lesson.title
         self.top_image = lesson.top_image
