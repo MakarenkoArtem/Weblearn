@@ -1,3 +1,34 @@
+@media (max-width: 700px) {
+    .card{
+        font-size: 30%
+    }
+    h1, h2, h3, h4, h5, h6 {
+            font-size: 100%;
+    }
+    img{
+        font-size: 100%
+    }
+}
+
+@media (min-width: 700px) {
+    h1, h2, h3, h4, h5, h6 {
+            font-size: 175%;
+    }
+
+}
+.card-img-top{
+    max-width: 350px
+}
+.main_container{
+    width: 95%;
+
+    margin-right: auto;
+    margin-left: auto;
+    /*padding-right: auto;
+    padding-left: auto;*/
+    max-width:1300px
+}
+
 h4{
     -weblit-margin-left: 20px; /* Отступ слева */
     margin-left: 20px; /* Отступ слева */
@@ -29,6 +60,8 @@ td {
     -weblit-padding-left: 20px;
   padding: 15px;
   padding-left: 20px;
+  max-width: 365px;
+
 }
 .testcss {
     -weblit-href:"/static/css/light.css";

@@ -22,7 +22,7 @@
 {% endif %}
 {% endblock %}
 {% block content %}
-<div class="container">
+<div class="main_container">
     <h3 align="center" class="mainText">Здесь распологаются уроки с заданиями к ним</h3>
 
     <br><br>
@@ -31,34 +31,43 @@
         {% if loop.index % 3 == 1 %}
         <tr>
             {% endif %}
-            <td>
+            <td width="33%">
                 <a href="/lesson/{{ lesson.id }}" style="text-decoration: none;">
                     <div class="card" style="position: relative;">
-                    <img src="/static/img/top_images/{{ img[loop.index-1] }}" class="card-img-top"
-                         alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ lesson.title }}</h5>
-                        <p class="card-text">{{ texts[loop.index - 1] }}<h4 align="left" class="hesh" style="margin-left: 0px">{% if lesson.items %}#{% endif %}{{ lesson.items }}</h4></p>
-                        <p class="card-text"><h4 align="left" class="hesh" style="margin-left: 0px">{{ lesson.author }}</h4></p>
-                        {% if lesson.author_id == id %}
-                        {% if lesson_del == lesson.id %}
-                        <br>
-                        <div style="float: left; position: relative;"><a
-                                href="/weblearn/page={{ page }}"
-                                class="btn btn-danger">Отмена</a></div>
-                        <div style="float: right; position: relative;"><a
-                                href="/del/{{ lesson_del }}"
-                                class="btn btn-danger">Точно удалить</a></div>
-                        {% else %}
-                        <div style="float: right; position: relative;"><a
-                                href="/weblearn/page={{ page }}/{{ lesson.id }}"
-                                class="btn btn-danger">Удалить</a></div>
-                        {% endif %}{% endif %}
-                    </div>
+                        <img src="/static/img/top_images/{{ img[loop.index-1] }}" class="card-img-top"
+                             alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title" style="overflow-wrap: anywhere;">{{ lesson.title }}</h5>
+                            <p class="card-text">{{ texts[loop.index - 1] }}<h4 align="left" class="hesh"
+                                                                                style="margin-left: 0px">{% if
+                            lesson.items %}#{% endif %}{{ lesson.items }}</h4></p>
+                            <p class="card-text"><h4 align="left" class="hesh" style="margin-left: 0px">{{ lesson.author
+                            }}</h4></p>
+                            {% if lesson.author_id == id %}
+                            {% if lesson_del == lesson.id %}
+                            <br>
+                            <div style="float: left; position: relative;"><a
+                                    href="/weblearn/page={{ page }}"
+                                    class="btn btn-danger">Отмена</a></div>
+                            <div style="float: right; position: relative;"><a
+                                    href="/del/{{ lesson_del }}"
+                                    class="btn btn-danger">Точно удалить</a></div>
+                            {% else %}
+                            <div style="float: right; position: relative;"><a
+                                    href="/weblearn/page={{ page }}/{{ lesson.id }}"
+                                    class="btn btn-danger">Удалить</a></div>
+                            {% endif %}{% endif %}
+                        </div>
                     </div>
                 </a>
             </td>
             {% if loop.index % 3 == 0 or loop.last %}
+            {% if loop.index == 1 %}
+                <td></td>
+                <td></td>
+            {% elif loop.index == 2 %}
+            <td></td>
+            {% endif %}
         </tr>
         {% endif %}
         {% endfor %}
@@ -77,5 +86,5 @@
 <a href="/add" style="bottom: 2.4%; right: 1.6%; position: fixed;">
     <img src="/static/img/icons8-libre-office-writer.svg">
 </a>
-v4.99
+v5.02
 {% endblock %}
