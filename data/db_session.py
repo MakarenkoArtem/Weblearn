@@ -24,7 +24,7 @@ def global_init():
         conn_str = LOCAL_DB
         #conn_str = DB.replace('postgres://', 'postgresql://')
     print(conn_str)
-    engine = sa.create_engine(conn_str, echo=False)
+    engine = sa.create_engine(conn_str, echo=True)
     __factory = orm.sessionmaker(bind=engine)
 
     from . import __all_models

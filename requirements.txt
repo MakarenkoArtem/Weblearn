@@ -4,7 +4,7 @@ flask_wtf
 flask_restful
 flask_login
 sqlalchemy_serializer
-wtforms
+wtforms==2.3.3
 requests
 psycopg2
 pillow
