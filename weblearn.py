@@ -293,7 +293,6 @@ def add_question():  # форма для добавления вопроса в 
         name = ''
     finally:
         db_sess.commit()
-    print(datetime.datetime.now() - start)
     return render_template('add_question.html', form=form, id=id, name=name)
 
 
